@@ -14,6 +14,9 @@ See [LIVE_OPERATIONS.md](LIVE_OPERATIONS.md) for credentials, weekly ingestion, 
 For the historical dataset milestone, use [HISTORICAL_INGESTION.md](HISTORICAL_INGESTION.md):
 `python scripts/fetch_acled_data.py` preserves raw API snapshots and produces CSV/Parquet
 master datasets and a quality report, without training or generating forecasts.
+Then run `python scripts/build_county_daily.py` to create the complete 47-county daily
+calendar, historical features, and censored seven-day labels. See [DAILY_DATASET.md](DAILY_DATASET.md).
+The dashboard displays daily coverage, zero-record counts, quality checks, and activity charts.
 
 The deployment package excludes raw ACLED data and notebook outputs. The original notebook
 bundle is preserved in `artifacts/severity_model_bundle.joblib` for research reference.

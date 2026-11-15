@@ -12,7 +12,7 @@ from uuid import uuid4
 
 import numpy as np
 import pandas as pd
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request, Query
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
@@ -21,6 +21,8 @@ from .registry import ModelRegistry
 from .schemas import BatchRequest, EventFeatures, Prediction
 from .early_warning import dashboard_state
 from .ingestion import EventStore
+from .data_dashboard import daily_state
+from .forecasting import COUNTIES
 
 LOGGER = logging.getLogger("severity_service")
 LOGGER.setLevel(logging.INFO)
@@ -99,6 +101,24 @@ def create_app(registry: ModelRegistry | None = None) -> FastAPI:
     def review_alerts():
         state = forecasts()
         return {'fresh':state['fresh'], 'mode':state['mode'], 'notice':state['notice'], 'alerts':state['alerts']}
+
+    def data_state():
+        return daily_state(Path(os.getenv('DAILY_DATA_ROOT',str(Path(__file__).resolve().parents[2]))))
+
+    @app.get('/v1/data/summary')
+    def data_summary():
+        return data_state()[0]
+
+    @app.get('/v1/data/daily')
+    def daily_activity(county: str = 'National', days: int = Query(90,ge=7,le=365)):
+        if county != 'National' and county not in COUNTIES:
+            raise HTTPException(status_code=422,detail='Unknown county')
+        summary,payload=data_state()
+        if payload is None:
+            raise HTTPException(status_code=503,detail='Daily activity files are not available in this deployment')
+        series=payload['national'] if county == 'National' else payload['counties'][county]
+        return {'county':county,'source_run_id':summary['source_run_id'],
+                'coverage_end':summary['end_date'],'series':series[-days:]}
 
     @app.middleware("http")
     async def timing(request: Request, call_next):

@@ -15,6 +15,10 @@ The helper selects the existing `.venv313` or `.venv` and loads `.env` if presen
 The main page contains the national map, searchable county assessments, historical
 probability trends, model performance, and the research review queue. `/event-assessment`
 retains the original event classifier. `/docs` describes both forecast and severity APIs.
+The **Daily data foundation** panel additionally displays the verified API calendar, all
+zero-record county-days, completeness checks, and daily national/county activity. Build it
+after extraction with `python scripts/build_county_daily.py`; see `DAILY_DATASET.md`.
+Its dataset coverage is separate from the older forecast replay's input coverage.
 
 With no fresh ingested forecasts, the dashboard shows **Historical replay, 1–7 September
 2025**. These are saved, actual held-out model estimates, not current 2026 forecasts.

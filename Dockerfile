@@ -8,6 +8,7 @@ RUN pip install --no-cache-dir -r requirements-prod.txt
 COPY src ./src
 COPY artifacts/production ./artifacts/production
 COPY artifacts/forecasting ./artifacts/forecasting
+COPY artifacts/data_quality ./artifacts/data_quality
 COPY scripts/update_forecasts.py ./scripts/update_forecasts.py
 COPY scripts/ingestion_worker.py ./scripts/ingestion_worker.py
 
