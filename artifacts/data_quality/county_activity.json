@@ -1,0 +1,1208 @@
+{
+  "windows": {
+    "7": {
+      "mode": "recorded_activity",
+      "source_run_id": "20261115T193537Z-bc6d2526",
+      "start_date": "2025-11-09",
+      "end_date": "2025-11-15",
+      "days": 7,
+      "counties": [
+        {
+          "county": "Baringo",
+          "events": 0,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Bomet",
+          "events": 0,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Bungoma",
+          "events": 2,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Busia",
+          "events": 2,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Elgeyo Marakwet",
+          "events": 0,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Embu",
+          "events": 1,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Garissa",
+          "events": 0,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Homa Bay",
+          "events": 2,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Isiolo",
+          "events": 0,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Kajiado",
+          "events": 0,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Kakamega",
+          "events": 8,
+          "fatalities": 5,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Kericho",
+          "events": 1,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Kiambu",
+          "events": 0,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Kilifi",
+          "events": 4,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Kirinyaga",
+          "events": 2,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Kisii",
+          "events": 0,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Kisumu",
+          "events": 1,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Kitui",
+          "events": 0,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Kwale",
+          "events": 1,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Laikipia",
+          "events": 0,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Lamu",
+          "events": 2,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Machakos",
+          "events": 0,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Makueni",
+          "events": 0,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Mandera",
+          "events": 1,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Marsabit",
+          "events": 1,
+          "fatalities": 3,
+          "high_political_violence_events": 1
+        },
+        {
+          "county": "Meru",
+          "events": 2,
+          "fatalities": 1,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Migori",
+          "events": 2,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Mombasa",
+          "events": 2,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Muranga",
+          "events": 1,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Nairobi",
+          "events": 8,
+          "fatalities": 2,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Nakuru",
+          "events": 2,
+          "fatalities": 2,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Nandi",
+          "events": 1,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Narok",
+          "events": 0,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Nyamira",
+          "events": 1,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Nyandarua",
+          "events": 0,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Nyeri",
+          "events": 0,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Samburu",
+          "events": 1,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Siaya",
+          "events": 0,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Taita Taveta",
+          "events": 0,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Tana River",
+          "events": 2,
+          "fatalities": 1,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Tharaka-Nithi",
+          "events": 1,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Trans Nzoia",
+          "events": 1,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Turkana",
+          "events": 2,
+          "fatalities": 2,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Uasin Gishu",
+          "events": 1,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Vihiga",
+          "events": 0,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Wajir",
+          "events": 0,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "West Pokot",
+          "events": 1,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        }
+      ],
+      "access_restrictions": {
+        "date_recency": {
+          "quantity": 12,
+          "unit": "Months",
+          "description": "12 Months old",
+          "timestamp": 1763235360,
+          "date": "2025-11-15"
+        }
+      },
+      "notice": "Actual recorded county totals from the historical API snapshot; not current forecasts."
+    },
+    "30": {
+      "mode": "recorded_activity",
+      "source_run_id": "20261115T193537Z-bc6d2526",
+      "start_date": "2025-10-17",
+      "end_date": "2025-11-15",
+      "days": 30,
+      "counties": [
+        {
+          "county": "Baringo",
+          "events": 1,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Bomet",
+          "events": 1,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Bungoma",
+          "events": 5,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Busia",
+          "events": 3,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Elgeyo Marakwet",
+          "events": 0,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Embu",
+          "events": 4,
+          "fatalities": 1,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Garissa",
+          "events": 2,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Homa Bay",
+          "events": 11,
+          "fatalities": 2,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Isiolo",
+          "events": 6,
+          "fatalities": 9,
+          "high_political_violence_events": 1
+        },
+        {
+          "county": "Kajiado",
+          "events": 5,
+          "fatalities": 3,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Kakamega",
+          "events": 15,
+          "fatalities": 7,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Kericho",
+          "events": 4,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Kiambu",
+          "events": 11,
+          "fatalities": 3,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Kilifi",
+          "events": 12,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Kirinyaga",
+          "events": 3,
+          "fatalities": 1,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Kisii",
+          "events": 2,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Kisumu",
+          "events": 3,
+          "fatalities": 2,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Kitui",
+          "events": 0,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Kwale",
+          "events": 3,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Laikipia",
+          "events": 6,
+          "fatalities": 2,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Lamu",
+          "events": 3,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Machakos",
+          "events": 6,
+          "fatalities": 1,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Makueni",
+          "events": 1,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Mandera",
+          "events": 3,
+          "fatalities": 1,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Marsabit",
+          "events": 4,
+          "fatalities": 6,
+          "high_political_violence_events": 1
+        },
+        {
+          "county": "Meru",
+          "events": 9,
+          "fatalities": 1,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Migori",
+          "events": 6,
+          "fatalities": 2,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Mombasa",
+          "events": 6,
+          "fatalities": 2,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Muranga",
+          "events": 5,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Nairobi",
+          "events": 25,
+          "fatalities": 4,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Nakuru",
+          "events": 10,
+          "fatalities": 2,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Nandi",
+          "events": 12,
+          "fatalities": 2,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Narok",
+          "events": 0,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Nyamira",
+          "events": 3,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Nyandarua",
+          "events": 0,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Nyeri",
+          "events": 4,
+          "fatalities": 1,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Samburu",
+          "events": 4,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Siaya",
+          "events": 3,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Taita Taveta",
+          "events": 1,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Tana River",
+          "events": 5,
+          "fatalities": 3,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Tharaka-Nithi",
+          "events": 1,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Trans Nzoia",
+          "events": 6,
+          "fatalities": 1,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Turkana",
+          "events": 18,
+          "fatalities": 11,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Uasin Gishu",
+          "events": 9,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Vihiga",
+          "events": 1,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Wajir",
+          "events": 1,
+          "fatalities": 1,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "West Pokot",
+          "events": 3,
+          "fatalities": 3,
+          "high_political_violence_events": 1
+        }
+      ],
+      "access_restrictions": {
+        "date_recency": {
+          "quantity": 12,
+          "unit": "Months",
+          "description": "12 Months old",
+          "timestamp": 1763235360,
+          "date": "2025-11-15"
+        }
+      },
+      "notice": "Actual recorded county totals from the historical API snapshot; not current forecasts."
+    },
+    "90": {
+      "mode": "recorded_activity",
+      "source_run_id": "20261115T193537Z-bc6d2526",
+      "start_date": "2025-08-18",
+      "end_date": "2025-11-15",
+      "days": 90,
+      "counties": [
+        {
+          "county": "Baringo",
+          "events": 8,
+          "fatalities": 1,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Bomet",
+          "events": 15,
+          "fatalities": 1,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Bungoma",
+          "events": 18,
+          "fatalities": 3,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Busia",
+          "events": 13,
+          "fatalities": 5,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Elgeyo Marakwet",
+          "events": 7,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Embu",
+          "events": 14,
+          "fatalities": 2,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Garissa",
+          "events": 11,
+          "fatalities": 1,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Homa Bay",
+          "events": 20,
+          "fatalities": 3,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Isiolo",
+          "events": 15,
+          "fatalities": 10,
+          "high_political_violence_events": 1
+        },
+        {
+          "county": "Kajiado",
+          "events": 18,
+          "fatalities": 5,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Kakamega",
+          "events": 28,
+          "fatalities": 12,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Kericho",
+          "events": 21,
+          "fatalities": 4,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Kiambu",
+          "events": 47,
+          "fatalities": 8,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Kilifi",
+          "events": 31,
+          "fatalities": 4,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Kirinyaga",
+          "events": 14,
+          "fatalities": 4,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Kisii",
+          "events": 24,
+          "fatalities": 6,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Kisumu",
+          "events": 26,
+          "fatalities": 7,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Kitui",
+          "events": 6,
+          "fatalities": 2,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Kwale",
+          "events": 9,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Laikipia",
+          "events": 11,
+          "fatalities": 2,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Lamu",
+          "events": 24,
+          "fatalities": 8,
+          "high_political_violence_events": 2
+        },
+        {
+          "county": "Machakos",
+          "events": 31,
+          "fatalities": 6,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Makueni",
+          "events": 9,
+          "fatalities": 2,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Mandera",
+          "events": 10,
+          "fatalities": 12,
+          "high_political_violence_events": 2
+        },
+        {
+          "county": "Marsabit",
+          "events": 13,
+          "fatalities": 10,
+          "high_political_violence_events": 2
+        },
+        {
+          "county": "Meru",
+          "events": 37,
+          "fatalities": 5,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Migori",
+          "events": 19,
+          "fatalities": 6,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Mombasa",
+          "events": 27,
+          "fatalities": 3,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Muranga",
+          "events": 15,
+          "fatalities": 2,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Nairobi",
+          "events": 107,
+          "fatalities": 18,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Nakuru",
+          "events": 33,
+          "fatalities": 4,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Nandi",
+          "events": 17,
+          "fatalities": 4,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Narok",
+          "events": 13,
+          "fatalities": 3,
+          "high_political_violence_events": 1
+        },
+        {
+          "county": "Nyamira",
+          "events": 6,
+          "fatalities": 2,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Nyandarua",
+          "events": 5,
+          "fatalities": 1,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Nyeri",
+          "events": 14,
+          "fatalities": 1,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Samburu",
+          "events": 11,
+          "fatalities": 5,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Siaya",
+          "events": 19,
+          "fatalities": 3,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Taita Taveta",
+          "events": 9,
+          "fatalities": 1,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Tana River",
+          "events": 16,
+          "fatalities": 8,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Tharaka-Nithi",
+          "events": 5,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Trans Nzoia",
+          "events": 19,
+          "fatalities": 3,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Turkana",
+          "events": 39,
+          "fatalities": 20,
+          "high_political_violence_events": 1
+        },
+        {
+          "county": "Uasin Gishu",
+          "events": 21,
+          "fatalities": 0,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Vihiga",
+          "events": 6,
+          "fatalities": 4,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Wajir",
+          "events": 1,
+          "fatalities": 1,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "West Pokot",
+          "events": 12,
+          "fatalities": 7,
+          "high_political_violence_events": 1
+        }
+      ],
+      "access_restrictions": {
+        "date_recency": {
+          "quantity": 12,
+          "unit": "Months",
+          "description": "12 Months old",
+          "timestamp": 1763235360,
+          "date": "2025-11-15"
+        }
+      },
+      "notice": "Actual recorded county totals from the historical API snapshot; not current forecasts."
+    },
+    "365": {
+      "mode": "recorded_activity",
+      "source_run_id": "20261115T193537Z-bc6d2526",
+      "start_date": "2024-11-16",
+      "end_date": "2025-11-15",
+      "days": 365,
+      "counties": [
+        {
+          "county": "Baringo",
+          "events": 50,
+          "fatalities": 19,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Bomet",
+          "events": 39,
+          "fatalities": 5,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Bungoma",
+          "events": 78,
+          "fatalities": 17,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Busia",
+          "events": 63,
+          "fatalities": 15,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Elgeyo Marakwet",
+          "events": 49,
+          "fatalities": 18,
+          "high_political_violence_events": 3
+        },
+        {
+          "county": "Embu",
+          "events": 64,
+          "fatalities": 11,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Garissa",
+          "events": 46,
+          "fatalities": 29,
+          "high_political_violence_events": 4
+        },
+        {
+          "county": "Homa Bay",
+          "events": 65,
+          "fatalities": 20,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Isiolo",
+          "events": 62,
+          "fatalities": 27,
+          "high_political_violence_events": 3
+        },
+        {
+          "county": "Kajiado",
+          "events": 78,
+          "fatalities": 18,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Kakamega",
+          "events": 94,
+          "fatalities": 29,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Kericho",
+          "events": 57,
+          "fatalities": 5,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Kiambu",
+          "events": 159,
+          "fatalities": 23,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Kilifi",
+          "events": 94,
+          "fatalities": 13,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Kirinyaga",
+          "events": 68,
+          "fatalities": 19,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Kisii",
+          "events": 95,
+          "fatalities": 24,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Kisumu",
+          "events": 78,
+          "fatalities": 21,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Kitui",
+          "events": 33,
+          "fatalities": 6,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Kwale",
+          "events": 29,
+          "fatalities": 5,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Laikipia",
+          "events": 52,
+          "fatalities": 8,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Lamu",
+          "events": 57,
+          "fatalities": 24,
+          "high_political_violence_events": 6
+        },
+        {
+          "county": "Machakos",
+          "events": 107,
+          "fatalities": 22,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Makueni",
+          "events": 41,
+          "fatalities": 10,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Mandera",
+          "events": 66,
+          "fatalities": 81,
+          "high_political_violence_events": 15
+        },
+        {
+          "county": "Marsabit",
+          "events": 38,
+          "fatalities": 20,
+          "high_political_violence_events": 2
+        },
+        {
+          "county": "Meru",
+          "events": 110,
+          "fatalities": 23,
+          "high_political_violence_events": 1
+        },
+        {
+          "county": "Migori",
+          "events": 67,
+          "fatalities": 17,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Mombasa",
+          "events": 106,
+          "fatalities": 12,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Muranga",
+          "events": 53,
+          "fatalities": 10,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Nairobi",
+          "events": 496,
+          "fatalities": 77,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Nakuru",
+          "events": 173,
+          "fatalities": 24,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Nandi",
+          "events": 40,
+          "fatalities": 10,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Narok",
+          "events": 64,
+          "fatalities": 24,
+          "high_political_violence_events": 1
+        },
+        {
+          "county": "Nyamira",
+          "events": 31,
+          "fatalities": 7,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Nyandarua",
+          "events": 32,
+          "fatalities": 11,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Nyeri",
+          "events": 57,
+          "fatalities": 14,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Samburu",
+          "events": 65,
+          "fatalities": 30,
+          "high_political_violence_events": 2
+        },
+        {
+          "county": "Siaya",
+          "events": 57,
+          "fatalities": 24,
+          "high_political_violence_events": 1
+        },
+        {
+          "county": "Taita Taveta",
+          "events": 25,
+          "fatalities": 1,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Tana River",
+          "events": 28,
+          "fatalities": 9,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Tharaka-Nithi",
+          "events": 18,
+          "fatalities": 1,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Trans Nzoia",
+          "events": 71,
+          "fatalities": 10,
+          "high_political_violence_events": 1
+        },
+        {
+          "county": "Turkana",
+          "events": 86,
+          "fatalities": 85,
+          "high_political_violence_events": 3
+        },
+        {
+          "county": "Uasin Gishu",
+          "events": 103,
+          "fatalities": 7,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Vihiga",
+          "events": 22,
+          "fatalities": 6,
+          "high_political_violence_events": 0
+        },
+        {
+          "county": "Wajir",
+          "events": 15,
+          "fatalities": 16,
+          "high_political_violence_events": 1
+        },
+        {
+          "county": "West Pokot",
+          "events": 35,
+          "fatalities": 11,
+          "high_political_violence_events": 2
+        }
+      ],
+      "access_restrictions": {
+        "date_recency": {
+          "quantity": 12,
+          "unit": "Months",
+          "description": "12 Months old",
+          "timestamp": 1763235360,
+          "date": "2025-11-15"
+        }
+      },
+      "notice": "Actual recorded county totals from the historical API snapshot; not current forecasts."
+    }
+  }
+}

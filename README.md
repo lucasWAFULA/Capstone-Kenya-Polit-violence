@@ -2,9 +2,11 @@
 
 Repository: https://github.com/lucasWAFULA/Capstone-Kenya-Polit-violence
 
-The national dashboard at `/` displays a 47-county map, seven-day research probabilities,
-forecast history, data freshness, and an in-app review queue. It starts with a clearly dated
-historical replay from actual held-out predictions, with current alerts suppressed.
+The national dashboard at `/` starts with an interactive 47-county map of actual recorded
+activity. Choose events, fatalities, or high-severity political violence and 7/30/90/365-day
+windows. Hover, click, drag to pan, and zoom with the controls or mouse wheel. County
+selection updates the detail panel, table, and local daily chart. The seven-day research
+forecast replay is a separate map layer; current alerts remain suppressed for historical inputs.
 Authenticated ACLED ingestion can update research forecasts without retraining the model.
 
 The separate `/event-assessment` page classifies a described event as Low, Moderate, or High.

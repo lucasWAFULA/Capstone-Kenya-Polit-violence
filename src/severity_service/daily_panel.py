@@ -128,8 +128,12 @@ def build_daily_dataset(root, *, output_root=None):
     pointer = output_root/(build_id+'.tmp')
     pointer.write_text(json.dumps({'directory':str(output.resolve()),'build_id':build_id}),encoding='utf-8')
     pointer.replace(output_root/'latest.json')
-    # Only aggregate build metadata is packaged; the panel and daily series stay private.
+    # Aggregate build metadata and county-window totals are packaged; daily files stay private.
     public_dir = root/'artifacts/data_quality'
     public_dir.mkdir(parents=True,exist_ok=True)
     (public_dir/'daily_summary.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
+    from .data_dashboard import county_activity
+    (public_dir/'county_activity.json').write_text(json.dumps({
+        'windows':{str(days):county_activity(dashboard,days) for days in [7,30,90,365]}
+    },indent=2),encoding='utf-8')
     return report, output

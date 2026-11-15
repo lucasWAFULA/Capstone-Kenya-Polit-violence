@@ -15,6 +15,9 @@ The helper selects the existing `.venv313` or `.venv` and loads `.env` if presen
 The main page contains the national map, searchable county assessments, historical
 probability trends, model performance, and the research review queue. `/event-assessment`
 retains the original event classifier. `/docs` describes both forecast and severity APIs.
+The map now defaults to actual recorded events, with a 30-day activity window. Switch
+layers or windows, hover over counties, click to select, drag to pan, and use +/− or scroll
+to zoom. Select **Seven-day forecast replay** to inspect the separately dated model output.
 The **Daily data foundation** panel additionally displays the verified API calendar, all
 zero-record county-days, completeness checks, and daily national/county activity. Build it
 after extraction with `python scripts/build_county_daily.py`; see `DAILY_DATASET.md`.

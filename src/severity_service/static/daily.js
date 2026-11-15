@@ -48,5 +48,15 @@
   }catch(error){text('daily-quality','Unavailable');text('daily-chart-note',error.message);}
  }
  $('daily-county').addEventListener('change',loadSeries);$('daily-window').addEventListener('change',loadSeries);$('refresh').addEventListener('click',refreshFoundation);
+ document.addEventListener('county-selected',event=>{
+  if(!available)return;
+  const {county,days}=event.detail;
+  if([...$('daily-county').options].some(option=>option.value===county)){
+   const previous=$('daily-county').value;
+   $('daily-county').value=county;
+   if([...$('daily-window').options].some(option=>option.value===String(days)))$('daily-window').value=String(days);
+   if(previous!==county||Number($('daily-window').value)===days)loadSeries();
+  }
+ });
  refreshFoundation();setInterval(refreshFoundation,60000);
 })();

@@ -21,7 +21,7 @@ from .registry import ModelRegistry
 from .schemas import BatchRequest, EventFeatures, Prediction
 from .early_warning import dashboard_state
 from .ingestion import EventStore
-from .data_dashboard import daily_state
+from .data_dashboard import daily_state,map_activity
 from .forecasting import COUNTIES
 
 LOGGER = logging.getLogger("severity_service")
@@ -119,6 +119,16 @@ def create_app(registry: ModelRegistry | None = None) -> FastAPI:
         series=payload['national'] if county == 'National' else payload['counties'][county]
         return {'county':county,'source_run_id':summary['source_run_id'],
                 'coverage_end':summary['end_date'],'series':series[-days:]}
+
+    @app.get('/v1/data/map')
+    def activity_map(days: int = Query(30,ge=7,le=365)):
+        if days not in (7,30,90,365):
+            raise HTTPException(status_code=422,detail='Use a 7, 30, 90, or 365 day window')
+        root=Path(os.getenv('DAILY_DATA_ROOT',str(Path(__file__).resolve().parents[2])))
+        result=map_activity(root,days)
+        if result is None:
+            raise HTTPException(status_code=503,detail='Build county activity aggregates before opening the map')
+        return result
 
     @app.middleware("http")
     async def timing(request: Request, call_next):
