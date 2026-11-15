@@ -170,3 +170,36 @@ Docker image. Automatic cloud deployment is deferred until a manual Cloud Run de
 is verified, following the guide.
 
 Setup reference: [Google's FastAPI quickstart](https://docs.cloud.google.com/run/docs/quickstarts/build-and-deploy/deploy-python-fastapi-service).
+
+## County-level seven-day forecasting research
+
+`Capstone2.ipynb` now includes section 16 for a separate early-warning experiment.
+It preserves the event severity classifier and does not change the local dashboard.
+The target is at least one high-severity political violence event in each county's
+next seven days. All 47 counties have weekly Monday observations, including zero-record
+weeks. Features use complete calendar-day windows strictly before the assumed reporting cutoff.
+Repeated actor rows are collapsed to one event ID when forecasting fields agree; conflicting
+event IDs are rejected. This prevents actor-level duplication from inflating incident counts.
+
+Run independently of the notebook:
+
+```powershell
+python scripts/train_forecasting.py --coverage-end 2025-09-07
+```
+
+Use the actual final fully observed date of your export. The default seven-day reporting
+delay is an assumption. `timestamp` is not treated as first-seen history. Without historic
+record versions and availability dates this is a retrospective experiment, not a proven
+real-time backtest. Repeat with `--reporting-delay-days 0` and `14` into separate `--output`
+folders to assess sensitivity. No-record rows do not prove that no violence occurred.
+
+Model selection compares a prevalence baseline, Logistic Regression, Random Forest, and
+XGBoost on rolling 2019–2021 validation. The selected model fits before 2022, calibrates
+on 2022, tunes its threshold on 2023, and is tested on 2024 onward. Label windows plus
+the reporting delay are purged at boundaries. The all-data refit is deliberately deferred.
+Exports under `artifacts/forecasting` contain the separate model bundle, summary, rolling
+metrics, county/year test metrics, reliability bins, and local-only panel/predictions.
+
+Current-data ingestion, county maps, and live alerting remain later phases. ACLED API access
+requires an authenticated account; future ingestion must retain first-seen timestamps and
+record versions. Historical 2025 records must not be displayed as current 2026 forecasts.

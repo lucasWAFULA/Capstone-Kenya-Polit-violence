@@ -1,0 +1,52 @@
+{
+  "status": "retrospective_research_not_live",
+  "limitation": "Retrospective research only. Historical first-seen timestamps and record versions are unavailable. A fixed reporting-delay assumption cannot reconstruct real-time knowledge or remove revision bias. Zero rows mean no recorded event, not verified absence of violence.",
+  "coverage_end": "2025-09-07",
+  "reporting_delay_days": 14,
+  "horizon_days": 7,
+  "counties": 47,
+  "county_weeks": 62980,
+  "selected_model": "Logistic Regression",
+  "selection": "mean 2019\u20132021 rolling validation average precision",
+  "train": "before 2022; label availability purged at boundaries",
+  "calibration": "2022 sigmoid calibration",
+  "threshold_tuning": "2023 positive-class F1",
+  "threshold": 0.060000000000000005,
+  "test": "2024 onwards; complete seven-day horizons only",
+  "test_metrics": {
+    "rows": 4136,
+    "positives": 77,
+    "precision": 0.12274368231046931,
+    "recall": 0.44155844155844154,
+    "macro_f1": 0.5779850815491556,
+    "pr_auc": 0.14855062178715092,
+    "roc_auc": 0.8792134202333759,
+    "brier_score": 0.016988930546065373,
+    "false_alarm_rate": 0.0598669623059867,
+    "false_discovery_rate": 0.8772563176895307
+  },
+  "uncalibrated_test_metrics": {
+    "rows": 4136,
+    "positives": 77,
+    "precision": 0.12060301507537688,
+    "recall": 0.6233766233766234,
+    "macro_f1": 0.5767484120073173,
+    "pr_auc": 0.14855062178715092,
+    "roc_auc": 0.8792134202333759,
+    "brier_score": 0.016964886381897124,
+    "false_alarm_rate": 0.08622813500862281,
+    "false_discovery_rate": 0.8793969849246231
+  },
+  "baseline_test_metrics": {
+    "rows": 4136,
+    "positives": 77,
+    "precision": 0.0,
+    "recall": 0.0,
+    "macro_f1": 0.49530201342281877,
+    "pr_auc": 0.018617021276595744,
+    "roc_auc": 0.5,
+    "brier_score": 0.018290130902158787,
+    "false_alarm_rate": 0.0,
+    "false_discovery_rate": null
+  }
+}

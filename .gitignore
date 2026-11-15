@@ -16,3 +16,7 @@ __pycache__/
 *service-account*.json
 ACLED*.csv
 github-release/
+artifacts/forecasting/county_week_dataset.csv
+artifacts/forecasting/test_predictions.csv
+artifacts/forecasting-*/county_week_dataset.csv
+artifacts/forecasting-*/test_predictions.csv
