@@ -5,6 +5,7 @@ services:
       - '8000:8080'
     volumes:
       - severity-runtime:/app/runtime
+      - severity-data:/app/data
     restart: unless-stopped
   ingestion:
     build: .
@@ -14,5 +15,16 @@ services:
       - severity-runtime:/app/runtime
     restart: unless-stopped
     profiles: ['live']
+  reporting:
+    build:
+      context: .
+      dockerfile: Dockerfile.reporting
+    env_file: .env
+    volumes:
+      - severity-runtime:/app/runtime
+      - severity-data:/app/data
+    restart: unless-stopped
+    profiles: ['reporting']
 volumes:
   severity-runtime:
+  severity-data:

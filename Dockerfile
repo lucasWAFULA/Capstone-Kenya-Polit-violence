@@ -12,7 +12,7 @@ COPY artifacts/data_quality ./artifacts/data_quality
 COPY scripts/update_forecasts.py ./scripts/update_forecasts.py
 COPY scripts/ingestion_worker.py ./scripts/ingestion_worker.py
 
-RUN mkdir -p /app/runtime && chown 65532:65532 /app/runtime
+RUN mkdir -p /app/runtime /app/data && chown 65532:65532 /app/runtime /app/data
 
 USER 65532:65532
 EXPOSE 8080

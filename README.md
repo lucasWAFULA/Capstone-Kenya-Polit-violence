@@ -13,6 +13,8 @@ The separate `/event-assessment` page classifies a described event as Low, Moder
 The two pages use different models and targets. ACLED records reflect reported incidents;
 results support human assessment and forecasting is not operationally validated.
 See [LIVE_OPERATIONS.md](LIVE_OPERATIONS.md) for credentials, weekly ingestion, and local startup.
+See [REPORTING_READINESS.md](REPORTING_READINESS.md) for the separate recent-reporting
+access check and automatic activity updater. A successful API login alone is not live reporting.
 For the historical dataset milestone, use [HISTORICAL_INGESTION.md](HISTORICAL_INGESTION.md):
 `python scripts/fetch_acled_data.py` preserves raw API snapshots and produces CSV/Parquet
 master datasets and a quality report, without training or generating forecasts.

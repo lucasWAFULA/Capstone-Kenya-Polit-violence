@@ -27,7 +27,9 @@ def test_packaged_counts_power_map_without_private_data(tmp_path,monkeypatch):
     assert map_activity(tmp_path,30)==data
     monkeypatch.setenv('DAILY_DATA_ROOT',str(tmp_path))
     with TestClient(create_app(registry())) as client:
-        assert client.get('/v1/data/map?days=30').json()==data
+        response=client.get('/v1/data/map?days=30').json()
+        assert response['counties']==data['counties']
+        assert not response['reporting']['recent_ingestion']
         assert client.get('/v1/data/map?days=20').status_code==422
 
 

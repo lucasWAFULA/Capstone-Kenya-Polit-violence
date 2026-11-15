@@ -1,0 +1,10 @@
+FROM python:3.13-slim
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PYTHONPATH=/app/src
+WORKDIR /app
+COPY requirements-prod.txt requirements-ingestion.txt ./
+RUN pip install --no-cache-dir -r requirements-ingestion.txt
+COPY src ./src
+COPY scripts ./scripts
+RUN mkdir -p /app/data /app/runtime /app/artifacts/data_quality && chown -R 65532:65532 /app/data /app/runtime /app/artifacts
+USER 65532:65532
+CMD ["python", "scripts/reporting_worker.py"]

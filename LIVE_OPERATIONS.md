@@ -29,6 +29,10 @@ Current alerts are suppressed. The historical export's end date is not its downl
 
 ## Connect ACLED locally
 
+For recent reported activity without running the research forecast model, follow
+`REPORTING_READINESS.md` and use `scripts/update_reporting.py`. The dashboard now
+shows API connectivity, access delay, last check, and last successful reporting sync.
+
 Create `.env` using `.env.example` as a template, then enter your own myACLED username
 and password in your editor, or supply an unexpired OAuth access token. Do not commit
 the file or paste passwords into chat. The project ignores it. Environment variables

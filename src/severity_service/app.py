@@ -23,6 +23,7 @@ from .early_warning import dashboard_state
 from .ingestion import EventStore
 from .data_dashboard import daily_state,map_activity
 from .forecasting import COUNTIES
+from .reporting import reporting_status,reporting_evidence
 
 LOGGER = logging.getLogger("severity_service")
 LOGGER.setLevel(logging.INFO)
@@ -109,6 +110,10 @@ def create_app(registry: ModelRegistry | None = None) -> FastAPI:
     def data_summary():
         return data_state()[0]
 
+    @app.get('/v1/reporting/status')
+    def source_reporting_status():
+        return reporting_status(Path(os.getenv('DAILY_DATA_ROOT',str(Path(__file__).resolve().parents[2]))))
+
     @app.get('/v1/data/daily')
     def daily_activity(county: str = 'National', days: int = Query(90,ge=7,le=365)):
         if county != 'National' and county not in COUNTIES:
@@ -128,7 +133,7 @@ def create_app(registry: ModelRegistry | None = None) -> FastAPI:
         result=map_activity(root,days)
         if result is None:
             raise HTTPException(status_code=503,detail='Build county activity aggregates before opening the map')
-        return result
+        return {**result,'reporting':reporting_evidence(root,result.get('source_run_id'))}
 
     @app.middleware("http")
     async def timing(request: Request, call_next):

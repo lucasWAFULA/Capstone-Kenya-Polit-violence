@@ -26,6 +26,9 @@ const assert = require('node:assert/strict');
  assert.notEqual(await evaluate("document.querySelector('#map').getAttribute('viewBox')"),'0 0 600 620');
  await evaluate("document.querySelector('#reset-map').click();document.querySelector('#map').dispatchEvent(new PointerEvent('pointerdown',{button:0,clientX:0,clientY:0}));document.querySelector('#map').dispatchEvent(new PointerEvent('pointerup'))");
  assert.equal(await evaluate("document.querySelectorAll('#alert-list li').length"),0);
+ await evaluate(`new Promise((resolve,reject)=>{let attempts=0;const timer=setInterval(()=>{if(document.querySelector('#reporting-access')?.textContent!=='Checking…'){clearInterval(timer);resolve(true);}else if(++attempts>100){clearInterval(timer);reject(new Error('Reporting evidence did not load'));}},100);})`);
+ const reporting=await evaluate("fetch('/v1/reporting/status').then(r=>r.json())");
+ if(reporting.status==='access_delayed'&&!reporting.check_stale){assert.match(await evaluate("document.querySelector('#reporting-access').textContent"),/access delayed/);assert.match(await evaluate("document.querySelector('#reporting-recent').textContent"),/0 in last 14 days/);}
  await evaluate("document.querySelector('#search').value='Nairobi';document.querySelector('#search').dispatchEvent(new Event('input'));document.querySelector('#county-table button').click()");
  assert.equal(await evaluate("document.querySelector('#selected-county').textContent"),'Nairobi County');
  assert.equal(await evaluate("document.querySelectorAll('#county-table tr').length"),1);
