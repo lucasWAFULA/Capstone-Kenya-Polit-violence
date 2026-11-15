@@ -1,17 +1,22 @@
-# Kenya Political Violence and Disorder Severity Demo
+# Kenya Political Violence Early-Warning Research System
 
 Repository: https://github.com/lucasWAFULA/Capstone-Kenya-Polit-violence
 
-A FastAPI browser demo classifying a described event as Low, Moderate, or High severity.
-Open `/` for the event form and all three class probabilities, or `/docs` for the API.
-This classifies event severity; it does not forecast whether violence will occur.
-ACLED records reflect reported and coded incidents. Results support human assessment.
+The national dashboard at `/` displays a 47-county map, seven-day research probabilities,
+forecast history, data freshness, and an in-app review queue. It starts with a clearly dated
+historical replay from actual held-out predictions, with current alerts suppressed.
+Authenticated ACLED ingestion can update research forecasts without retraining the model.
+
+The separate `/event-assessment` page classifies a described event as Low, Moderate, or High.
+The two pages use different models and targets. ACLED records reflect reported incidents;
+results support human assessment and forecasting is not operationally validated.
+See [LIVE_OPERATIONS.md](LIVE_OPERATIONS.md) for credentials, weekly ingestion, and local startup.
 
 The deployment package excludes raw ACLED data and notebook outputs. The original notebook
 bundle is preserved in `artifacts/severity_model_bundle.joblib` for research reference.
 The service uses the separately refitted registry in `artifacts/production`.
 Reported holdout metrics describe the chronological experiment, not an independent evaluation
-of the final all-data refit. Historical features are entered manually in this first demo.
+of the final all-data refit. Historical features on the event-assessment page are entered manually.
 
 This project serves the notebook's governed model decision:
 
@@ -49,12 +54,12 @@ python -m pip install -r requirements.txt
 
 ```powershell
 $env:PYTHONPATH = "$PWD/src"
-uvicorn severity_service.app:app --host 0.0.0.0 --port 8080
+uvicorn severity_service.app:app --host 127.0.0.1 --port 8000
 ```
 
-OpenAPI documentation is at `http://localhost:8080/docs`. Health probes are
+OpenAPI documentation is at `http://localhost:8000/docs`. Health probes are
 `/health/live` and `/health/ready`.
-Open `http://localhost:8080/` for the browser form. `/health` and `/predict` are
+Open `http://localhost:8000/` for the national overview, or `/event-assessment` for the event form. `/health` and `/predict` are
 aliases for `/health/ready` and `/v1/predict`. Responses use `severity` and `probabilities`.
 
 Example request:
@@ -174,7 +179,7 @@ Setup reference: [Google's FastAPI quickstart](https://docs.cloud.google.com/run
 ## County-level seven-day forecasting research
 
 `Capstone2.ipynb` now includes section 16 for a separate early-warning experiment.
-It preserves the event severity classifier and does not change the local dashboard.
+It preserves the event severity classifier. Its separate bundle supplies the national dashboard.
 The target is at least one high-severity political violence event in each county's
 next seven days. All 47 counties have weekly Monday observations, including zero-record
 weeks. Features use complete calendar-day windows strictly before the assumed reporting cutoff.
@@ -200,6 +205,6 @@ the reporting delay are purged at boundaries. The all-data refit is deliberately
 Exports under `artifacts/forecasting` contain the separate model bundle, summary, rolling
 metrics, county/year test metrics, reliability bins, and local-only panel/predictions.
 
-Current-data ingestion, county maps, and live alerting remain later phases. ACLED API access
-requires an authenticated account; future ingestion must retain first-seen timestamps and
-record versions. Historical 2025 records must not be displayed as current 2026 forecasts.
+Current-data ingestion, the county map, and in-app research alerts are implemented. API access
+requires an authenticated account; ingestion retains first-seen timestamps and record versions.
+Historical 2025 records are explicitly labelled and cannot generate current alerts.

@@ -14,10 +14,13 @@ import numpy as np
 import pandas as pd
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 
 from .features import CLASS_ORDER, add_calendar_features
 from .registry import ModelRegistry
 from .schemas import BatchRequest, EventFeatures, Prediction
+from .early_warning import dashboard_state
+from .ingestion import EventStore
 
 LOGGER = logging.getLogger("severity_service")
 LOGGER.setLevel(logging.INFO)
@@ -73,10 +76,29 @@ def create_app(registry: ModelRegistry | None = None) -> FastAPI:
         yield
 
     app = FastAPI(title="Kenya Event Severity API", version="1.0.0", lifespan=lifespan)
+    app.mount('/static', StaticFiles(directory=Path(__file__).with_name('static')), name='static')
 
     @app.get("/", include_in_schema=False)
     def dashboard():
+        return FileResponse(Path(__file__).with_name("overview.html"))
+
+    @app.get('/event-assessment', include_in_schema=False)
+    def event_assessment():
         return FileResponse(Path(__file__).with_name("dashboard.html"))
+
+    def forecasts():
+        store_path = Path(os.getenv('EVENT_STORE_PATH', str(Path(__file__).resolve().parents[2] / 'runtime/events.sqlite3')))
+        store = EventStore(store_path) if store_path.exists() else None
+        return dashboard_state(store)
+
+    @app.get('/v1/forecasts')
+    def latest_forecasts():
+        return forecasts()
+
+    @app.get('/v1/alerts')
+    def review_alerts():
+        state = forecasts()
+        return {'fresh':state['fresh'], 'mode':state['mode'], 'notice':state['notice'], 'alerts':state['alerts']}
 
     @app.middleware("http")
     async def timing(request: Request, call_next):

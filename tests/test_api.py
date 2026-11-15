@@ -76,6 +76,12 @@ def test_dashboard_and_guide_aliases():
         assert page.status_code == 200
         assert "text/html" in page.headers["content-type"]
         assert "Event Severity Monitor" in page.text
+        assert "National risk overview" in page.text
+        assert "Event Severity Monitor" in client.get('/event-assessment').text
+        assert len(client.get('/static/kenya-counties.geojson').json()['features']) == 47
+        forecasts = client.get('/v1/forecasts').json()
+        assert len(forecasts['counties']) == 47
+        assert client.get('/v1/alerts').json()['alerts'] == []
         assert client.get("/health").json()["status"] == "ready"
         assert client.post("/predict", json=EVENT).json()["severity"] == "High"
 

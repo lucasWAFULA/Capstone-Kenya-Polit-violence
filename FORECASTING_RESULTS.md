@@ -76,7 +76,8 @@ county/year metrics, and test reliability bins. The large generated panel and pe
 predictions stay local. The saved estimator is the pre-2022 research estimator with its
 2022 calibrator; it is not refitted through 2025 and is not loaded by the severity API.
 
-Next phases require authenticated ingestion, first-seen/versioned records, explicit data
-freshness checks, prospective evaluation, and a human alert review policy before maps or
-live alerts are presented as operational. ACLED documents authenticated API access in its
+The next application phase now includes authenticated ingestion, first-seen/versioned
+snapshots, freshness checks, a county map, and an in-app research review queue. It still
+requires account configuration and prospective evaluation before operational use.
+See `LIVE_OPERATIONS.md`. ACLED documents authenticated API access in its
 [getting-started guide](https://acleddata.com/api-documentation/getting-started).

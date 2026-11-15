@@ -7,6 +7,11 @@ COPY requirements-prod.txt .
 RUN pip install --no-cache-dir -r requirements-prod.txt
 COPY src ./src
 COPY artifacts/production ./artifacts/production
+COPY artifacts/forecasting ./artifacts/forecasting
+COPY scripts/update_forecasts.py ./scripts/update_forecasts.py
+COPY scripts/ingestion_worker.py ./scripts/ingestion_worker.py
+
+RUN mkdir -p /app/runtime && chown 65532:65532 /app/runtime
 
 USER 65532:65532
 EXPOSE 8080

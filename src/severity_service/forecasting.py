@@ -37,7 +37,7 @@ LIMITATION = ('Retrospective research only. Historical first-seen timestamps and
 
 
 def county_weeks(events: pd.DataFrame, *, coverage_end, reporting_delay_days=7,
-                 start='2000-01-03', counties=COUNTIES) -> pd.DataFrame:
+                 start='2000-01-03', counties=COUNTIES, forecast_origin=None) -> pd.DataFrame:
     """Monday origins, full county calendar, [origin, origin+7) labels.
 
     Predictors use incident dates strictly before origin minus the assumed delay.
@@ -67,8 +67,16 @@ def county_weeks(events: pd.DataFrame, *, coverage_end, reporting_delay_days=7,
     data['violent'] = data.event_type.isin(VIOLENT_TYPES).astype(int)
     data['high'] = ((data.fatalities >= 3) & data.violent.eq(1)
                     & data.disorder_type.str.contains('Political violence', regex=False)).astype(int)
-    dates = pd.date_range(min(data.event_date.min(), pd.Timestamp(start) - pd.Timedelta(days=365)), end + pd.Timedelta(days=1))
-    origins = pd.date_range(start, end - pd.Timedelta(days=6), freq='W-MON')
+    if forecast_origin is None:
+        origins = pd.date_range(start, end - pd.Timedelta(days=6), freq='W-MON')
+        calendar_end = end + pd.Timedelta(days=1)
+    else:
+        origins = pd.DatetimeIndex([pd.Timestamp(forecast_origin).normalize()])
+        cutoff = origins[0] - pd.Timedelta(days=reporting_delay_days)
+        if cutoff > end + pd.Timedelta(days=1):
+            raise ValueError('Data coverage does not reach the forecast history cutoff')
+        calendar_end = max(end + pd.Timedelta(days=1), origins[0])
+    dates = pd.date_range(min(data.event_date.min(), pd.Timestamp(start) - pd.Timedelta(days=365)), calendar_end)
     origins = origins[origins - pd.Timedelta(days=reporting_delay_days + 90) >= dates.min()]
     if origins.empty:
         raise ValueError('Insufficient history or no fully observed forecast windows')
@@ -93,9 +101,10 @@ def county_weeks(events: pd.DataFrame, *, coverage_end, reporting_delay_days=7,
         frame['history_cutoff_exclusive'] = cutoff
         frame['label_end_exclusive'] = origins + pd.Timedelta(days=7)
         frame['county'] = county
-        cumulative = daily.high.cumsum().shift(1, fill_value=0)
-        frame['target'] = ((cumulative.loc[origins + pd.Timedelta(days=7)].to_numpy()
-                            - cumulative.loc[origins].to_numpy()) > 0).astype(int)
+        if forecast_origin is None:
+            cumulative = daily.high.cumsum().shift(1, fill_value=0)
+            frame['target'] = ((cumulative.loc[origins + pd.Timedelta(days=7)].to_numpy()
+                                - cumulative.loc[origins].to_numpy()) > 0).astype(int)
         frame['month_sin'] = np.sin(2 * np.pi * origins.month / 12)
         frame['month_cos'] = np.cos(2 * np.pi * origins.month / 12)
         frame['quarter'] = origins.quarter
