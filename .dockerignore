@@ -12,3 +12,5 @@ __pycache__
 *.csv
 tests
 runtime
+data
+test_acled.py

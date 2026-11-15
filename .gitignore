@@ -22,3 +22,5 @@ artifacts/forecasting-*/county_week_dataset.csv
 artifacts/forecasting-*/test_predictions.csv
 runtime/
 *.sqlite3*
+data/
+test_acled.py

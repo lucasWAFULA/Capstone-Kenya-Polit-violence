@@ -1,4 +1,4 @@
--r requirements-prod.txt
+-r requirements-ingestion.txt
 
 # Development and verification
 pytest==9.2.0

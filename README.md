@@ -11,6 +11,9 @@ The separate `/event-assessment` page classifies a described event as Low, Moder
 The two pages use different models and targets. ACLED records reflect reported incidents;
 results support human assessment and forecasting is not operationally validated.
 See [LIVE_OPERATIONS.md](LIVE_OPERATIONS.md) for credentials, weekly ingestion, and local startup.
+For the historical dataset milestone, use [HISTORICAL_INGESTION.md](HISTORICAL_INGESTION.md):
+`python scripts/fetch_acled_data.py` preserves raw API snapshots and produces CSV/Parquet
+master datasets and a quality report, without training or generating forecasts.
 
 The deployment package excludes raw ACLED data and notebook outputs. The original notebook
 bundle is preserved in `artifacts/severity_model_bundle.joblib` for research reference.

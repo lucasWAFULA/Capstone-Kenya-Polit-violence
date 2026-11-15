@@ -15,6 +15,8 @@ import pandas as pd
 from .forecasting import COUNTIES
 
 FIELDS = ['event_id_cnty', 'event_date', 'admin1', 'fatalities', 'disorder_type', 'event_type']
+TOKEN_URL = 'https://acleddata.com/oauth/token'
+API_URL = 'https://acleddata.com/api/acled/read'
 ALIASES = {'Elgeyo-Marakwet': 'Elgeyo Marakwet', "Murang'a": 'Muranga',
            'Murang’a': 'Muranga', 'Tharaka Nithi': 'Tharaka-Nithi', 'Taita-Taveta': 'Taita Taveta'}
 
@@ -69,31 +71,46 @@ def request_json(client, method, url, **kwargs):
     raise RuntimeError('ACLED request failed')
 
 
+def active_restrictions(value):
+    """Empty restriction buckets are metadata, not access limitations."""
+    if isinstance(value, dict):
+        return {key: item for key, raw in value.items() if (item := active_restrictions(raw))}
+    if isinstance(value, list):
+        return [item for raw in value if (item := active_restrictions(raw))]
+    return value if value not in (None, '', False) else None
+
+
+def access_token(client):
+    token = os.getenv('ACLED_ACCESS_TOKEN')
+    if token:
+        return token
+    username, password = os.getenv('ACLED_USERNAME'), os.getenv('ACLED_PASSWORD')
+    if not username or not password:
+        raise RuntimeError('Set ACLED_USERNAME and ACLED_PASSWORD, or ACLED_ACCESS_TOKEN locally')
+    token = request_json(client, 'POST', TOKEN_URL, data={
+        'username':username, 'password':password, 'grant_type':'password',
+        'client_id':'acled', 'scope':'authenticated'}).get('access_token')
+    if not token:
+        raise RuntimeError('ACLED authentication returned no access token')
+    return token
+
+
 def fetch_acled(coverage_end, *, client=None, return_metadata=False):
     """Cursor pagination, dyadic events; partial/restricted downloads fail closed."""
     owned = client is None
     client = client or httpx.Client(timeout=60, follow_redirects=False)
     try:
-        token = os.getenv('ACLED_ACCESS_TOKEN')
-        if not token:
-            username, password = os.getenv('ACLED_USERNAME'), os.getenv('ACLED_PASSWORD')
-            if not username or not password:
-                raise RuntimeError('Set ACLED_USERNAME and ACLED_PASSWORD, or ACLED_ACCESS_TOKEN locally')
-            token = request_json(client, 'POST', 'https://acleddata.com/oauth/token', data={
-                'username': username, 'password': password, 'grant_type': 'password',
-                'client_id': 'acled', 'scope': 'authenticated'}).get('access_token')
-            if not token:
-                raise RuntimeError('ACLED authentication returned no access token')
+        token = access_token(client)
         records, cursors, cursor, expected = [], set(), '0', None
         for _ in range(1000):
-            payload = request_json(client, 'GET', 'https://acleddata.com/api/acled/read',
+            payload = request_json(client, 'GET', API_URL,
                 headers={'Authorization': f'Bearer {token}'}, params={
                     '_format': 'json', 'country': 'Kenya', 'export_type': 'dyadic',
                     'event_date': str(coverage_end), 'event_date_where': '<=',
                     'limit': 5000, 'cursor': cursor, 'with_total': 'true'})
             if payload.get('success') is not True or not isinstance(payload.get('data'), list):
                 raise RuntimeError('ACLED response did not confirm a successful data query')
-            if payload.get('data_query_restrictions'):
+            if active_restrictions(payload.get('data_query_restrictions')):
                 raise RuntimeError('ACLED reports query restrictions; confirm full Kenya/history/recency access')
             age = payload.get('last_update')
             if age is None or not 0 <= float(age) <= 8 * 24:
