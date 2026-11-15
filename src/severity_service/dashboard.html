@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kenya Event Severity Monitor</title>
+<style>
+:root{font:16px system-ui;color:#17342f;background:#f0f4f1}*{box-sizing:border-box}body{margin:0}header{background:#123c32;color:white;padding:40px max(5vw,20px)}header p{color:#c7ddd2;max-width:740px}main{max-width:1150px;margin:30px auto;padding:0 20px;display:grid;grid-template-columns:2fr 1fr;gap:24px}section,aside{background:white;border:1px solid #d6e1da;border-radius:14px;padding:26px}aside{align-self:start;position:sticky;top:20px}h1{font-size:clamp(26px,4vw,40px);margin:12px 0}h2{font-size:21px;margin-top:0}fieldset{border:0;padding:0;margin:0 0 24px}legend{font-weight:700;margin-bottom:14px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:16px}label{display:block;font-size:14px}input{width:100%;padding:11px;border:1px solid #afc5b9;border-radius:7px;margin-top:6px;font:inherit}button{padding:13px 24px;background:#14634b;color:white;border:0;border-radius:8px;font:inherit;cursor:pointer}button:disabled{opacity:.6}small,.note{color:#52685d;line-height:1.5}a{color:inherit}#severity{font-size:36px;font-weight:700;margin:14px 0}.bar{height:10px;background:#e8eee9;border-radius:6px;margin:7px 0 18px;overflow:hidden}.fill{height:100%;background:#23805d}#error{color:#a62121;white-space:pre-wrap}footer{max-width:1150px;margin:25px auto;padding:0 20px 30px;color:#52685d;line-height:1.6}@media(max-width:760px){main{grid-template-columns:1fr}.fields{grid-template-columns:1fr}aside{position:static}}
+</style>
+<header><small style="color:#c7ddd2">KENYA · RESEARCH DEMO</small><h1>Event Severity Monitor</h1><p>Classify a described political violence or disorder event using a trained machine learning model and historical context.</p><a href="/docs">API documentation ↗</a></header>
+<main><section><h2>Describe an event</h2><p class="note">The prefilled scenario is illustrative. Replace it with your event details and history calculated strictly before the event date.</p><form id="form"><fieldset><legend>Event characteristics</legend><div class="fields" id="event-fields"></div></fieldset><fieldset><legend>Historical context</legend><p class="note">Enter verified counts manually. Unknown history must not be assumed to be zero. Previous high-severity events uses a 90-day window.</p><div class="fields" id="history-fields"></div></fieldset><button id="submit">Classify severity</button><p id="error" role="alert"></p></form></section>
+<aside aria-live="polite"><h2>Model assessment</h2><p id="status" class="note">Submit the form to obtain a live model result.</p><div id="severity"></div><div id="probabilities"></div><small id="model"></small><hr><p class="note">Low: 0 fatalities<br>Moderate: 1–2 fatalities<br>High: 3 or more fatalities</p></aside></main>
+<footer>This research demo classifies event severity; it does not forecast whether violence will occur. ACLED records reflect reported and coded incidents. Probabilities are model estimates and may be poorly calibrated. High-severity events may be missed. Use results to support human assessment.</footer>
+<script>
+const fields=[
+['event_date','Event date','date','2025-08-18'],['disorder_type','Disorder type','text','Political violence'],['event_type','Event type','text','Battles'],['sub_event_type','Sub-event type','text','Armed clash'],['admin1','County','text','Nairobi'],['admin2','Sub-county','text','Nairobi'],['inter1','Actor type code','number',1],['interaction','Interaction code','number',12],['civilian_targeting','Civilian targeting (blank = missing)','text',''],
+['county_events_previous_30_days','County events · previous 30 days','number',8],['county_events_previous_90_days','County events · previous 90 days','number',20],['violent_events_previous_30_days','Violent events · previous 30 days','number',4],['previous_high_severity_events_in_county','High-severity county events · previous 90 days','number',1],['days_since_previous_event_in_county','Days since previous county event','number',2],['actor_previous_event_count','All previous events for the primary actor','number',15]];
+for(const [i,[name,title,type,value]] of fields.entries()){
+ const label=document.createElement('label');label.textContent=title;
+ const input=document.createElement('input');Object.assign(input,{name,type,value,required:name!=='civilian_targeting'});if(type==='number'){input.min=0;input.step='1';}label.append(input);document.getElementById(i<9?'event-fields':'history-fields').append(label);
+}
+document.getElementById('form').addEventListener('submit',async e=>{
+ e.preventDefault();const button=document.getElementById('submit');button.disabled=true;
+ document.getElementById('error').textContent='';document.getElementById('severity').textContent='';document.getElementById('probabilities').replaceChildren();document.getElementById('model').textContent='';document.getElementById('status').textContent='Calculating…';
+ const data={};const form=new FormData(e.target);for(const [name,,type] of fields){const value=form.get(name);data[name]=type==='number'?Number(value):(value||null);}
+ try{const response=await fetch('/v1/predict',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});const result=await response.json();if(!response.ok)throw new Error(typeof result.detail==='string'?result.detail:JSON.stringify(result.detail));
+ document.getElementById('status').textContent='Predicted severity';document.getElementById('severity').textContent=result.severity;
+ for(const label of ['Low','Moderate','High']){const probability=result.probabilities[label];const title=document.createElement('div');title.textContent=`${label} · ${(probability*100).toFixed(1)}%`;const bar=document.createElement('div');bar.className='bar';const fill=document.createElement('div');fill.className='fill';fill.style.width=`${probability*100}%`;bar.append(fill);document.getElementById('probabilities').append(title,bar);}
+ document.getElementById('model').textContent=`${result.model_name} · version ${result.model_version}`;
+ }catch(error){document.getElementById('error').textContent=error.message;document.getElementById('status').textContent='Assessment unavailable. Check the inputs and try again.';}finally{button.disabled=false;}
+});
+</script>
+</html>

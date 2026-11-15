@@ -1,0 +1,5 @@
+-r requirements-prod.txt
+
+# Development and verification
+httpx==0.28.1
+pytest==9.2.0

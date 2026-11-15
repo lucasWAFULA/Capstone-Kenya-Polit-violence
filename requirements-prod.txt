@@ -1,0 +1,10 @@
+fastapi==0.163.1
+joblib==1.6.0
+numpy==2.5.4
+pandas==3.1.1
+pydantic==2.14.3
+scikit-learn==1.9.0
+scipy==1.18.1
+uvicorn[standard]==0.54.0
+xgboost-cpu==3.4.1; platform_system == "Linux"
+xgboost==3.4.1; platform_system != "Linux"

@@ -1,0 +1,17 @@
+.gcloudignore
+.git
+.gitignore
+.venv
+.venv313
+.python
+github-release
+.env*
+.pytest_cache
+**/__pycache__
+*.pyc
+*.ipynb
+*.csv
+.snapshots
+tests
+deploy
+README.md

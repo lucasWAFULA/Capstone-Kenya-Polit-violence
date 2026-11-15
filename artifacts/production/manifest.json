@@ -1,0 +1,56 @@
+{
+  "version": "1.0.0",
+  "created_at": "2026-09-21T14:03:56.144808+00:00",
+  "training_data": {
+    "file": "ACLED_Kenya_1997-2025.csv",
+    "rows": 28058,
+    "max_event_date": "2025-09-07"
+  },
+  "feature_columns": [
+    "disorder_type",
+    "event_type",
+    "sub_event_type",
+    "admin1",
+    "admin2",
+    "inter1",
+    "interaction",
+    "civilian_targeting",
+    "day_of_week",
+    "year",
+    "month",
+    "quarter",
+    "county_events_previous_30_days",
+    "county_events_previous_90_days",
+    "violent_events_previous_30_days",
+    "previous_high_severity_events_in_county",
+    "days_since_previous_event_in_county",
+    "actor_previous_event_count"
+  ],
+  "class_order": [
+    "Low",
+    "Moderate",
+    "High"
+  ],
+  "split_policy": {
+    "train": "<2022-01-01",
+    "validation": "2022-01-01..2023-12-31",
+    "test": ">=2024-01-01"
+  },
+  "models": {
+    "primary": {
+      "name": "Logistic Regression",
+      "file": "logistic_regression.joblib",
+      "sha256": "4d9238e55e23bcbbdd12e7887fe0981b39063b77cc439ac433621bab264b5f6b"
+    },
+    "challenger": {
+      "name": "XGBoost",
+      "file": "xgboost.joblib",
+      "sha256": "a0c3e3652d3f1786d44c303fb52ca8c0d6d30d357630888befe2663e41cc03e2"
+    }
+  },
+  "runtime": {
+    "python": "3.13.1",
+    "scikit_learn": "1.9.0",
+    "xgboost": "3.4.1"
+  }
+}

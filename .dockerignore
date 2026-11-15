@@ -1,0 +1,13 @@
+.git
+.venv
+.venv313
+.python
+github-release
+.snapshots
+.env*
+**/__pycache__
+__pycache__
+.pytest_cache
+*.ipynb
+*.csv
+tests
