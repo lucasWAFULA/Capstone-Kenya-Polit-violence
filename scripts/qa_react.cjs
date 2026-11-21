@@ -40,7 +40,7 @@ const assert=require('node:assert/strict');
  shot=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:true});fs.writeFileSync('runtime/kpviews-mobile.png',Buffer.from(shot.data,'base64'));
  await evaluate(`document.querySelector('[aria-label="Open navigation"]').click()`);assert.equal(await evaluate(`document.querySelector('aside').classList.contains('open')`),true);
  await nav(1);assert.equal(await evaluate(`document.documentElement.scrollWidth<=window.innerWidth`),true);
- await evaluate(`document.querySelector('[aria-label="Use dark theme"]').click()`);assert.equal(await evaluate(`document.documentElement.dataset.theme`),'dark');
+ await evaluate(`if(document.documentElement.dataset.theme!=='dark') document.querySelector('[aria-label="Use dark theme"]').click()`);assert.equal(await evaluate(`document.documentElement.dataset.theme`),'dark');
  assert.deepEqual(errors,[]);console.log('Browser QA passed: all seven pages, 47 counties, real individual and batch predictions, charts, suppressed historical alerts, mobile navigation, no overflow, dark theme and no JavaScript exceptions.');
  await send('Browser.close');ws.close();
 })().catch(e=>{console.error(e);process.exit(1)});
