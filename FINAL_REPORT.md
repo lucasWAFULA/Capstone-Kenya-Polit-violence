@@ -173,7 +173,7 @@ cloud deployment and testing commands. Dependency files, the frontend lockfile, 
 and metric artifacts are committed. Exact experiment reproduction additionally requires the
 original frozen data export; a later API response may have different coverage or revisions.
 
-On 21 November 2026, the production React build completed, **44 backend tests passed**, and
+On 21 November 2026, the production React build completed, **50 backend tests passed**, including six annual-outlook checks, and
 browser checks passed against the deployed service. Checks exercised all seven sections,
 47 county polygons, real individual/batch predictions, historical-alert suppression, daily
 charts, mobile layout/navigation and dark mode, with no captured JavaScript exceptions.

@@ -31,7 +31,7 @@ evaluation files rather than inventing evaluation results. The form's explicitly
 illustrative test inputs are examples, not observed incidents. Historical forecast replay is
 not presented as a current forecast or a verified alert stream.
 
-Software checks included a production React build, 44 passing backend tests and browser
+Software checks included a production React build, 50 passing backend tests and browser
 acceptance checks against the deployed service on 21 November 2026. These checks establish
 tested software behavior; they do not independently validate every research assumption,
 prove real-time forecasting validity or establish compliance with a course policy.
