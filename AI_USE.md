@@ -18,6 +18,11 @@ commands to build the application, test predictions, inspect deployment state an
 authorized changes to GitHub and Cloud Run. Repository commits record those implementation
 changes. This is a substantive development and writing contribution, not spelling assistance alone.
 
+The subsequent 2026–2030 annual outlook was also AI-assisted: code for annual aggregation,
+candidate comparison, multi-year validation, empirical error bands, tests, API/UI integration
+and methodology documentation was generated and revised with Codex. Its numerical results
+are computed from the committed annual aggregate data, not fabricated future incident records.
+
 ## Data and reported results
 
 Observed activity comes from the project's ACLED records and derived aggregate artifacts;

@@ -9,6 +9,7 @@ predictions and bounded aggregate data.
 - **Public demonstration:** https://kenya-event-severity-clabrcsgmq-bq.a.run.app
 - **Final report:** [FINAL_REPORT.md](FINAL_REPORT.md)
 - **AI disclosure:** [AI_USE.md](AI_USE.md)
+- **2026–2030 outlook:** [LONG_TERM_OUTLOOK.md](LONG_TERM_OUTLOOK.md)
 
 Website and API access are public as of 21 November 2026. ACLED ingestion still requires
 separate data-provider credentials. Historical results are labelled; public hosting does not
@@ -43,6 +44,10 @@ Keep these evidence types separate:
    (3+) and class probabilities. XGBoost scores in shadow mode only.
 3. **County forecasts:** a separate Random Forest research model estimates at least one
    high-severity political violence event in the next seven days.
+4. **Annual outlook:** the Forecasts page now defaults to a separate 2026–2030 annual count
+   projection with empirical error bands. A damped log trend is selected by multi-year
+   validation; 2019–2024 is held out. Only complete 2000–2024 years fit this model, since
+   the November 2025 cutoff leaves 2025 incomplete. See [LONG_TERM_OUTLOOK.md](LONG_TERM_OUTLOOK.md).
 
 Fatalities define outcomes and appear in descriptive statistics; current-event fatalities are
 never accepted as predictors. The severity API requires six caller-supplied historical values
@@ -140,6 +145,13 @@ experiment, not independent evaluation of the final all-data refit.
 
 ### Separate forecasting experiment
 
+The existing command below reproduces the **seven-day** experiment. To reproduce the new
+annual 2026–2030 outlook from committed aggregate history, run:
+
+```powershell
+python scripts/build_long_term_outlook.py --annual-input artifacts/outlook/annual_history.json
+```
+
 ```powershell
 python scripts/train_forecasting.py --data 'PATH_TO_FROZEN_EXPORT.csv' --coverage-end 2025-09-07 --reporting-delay-days 7 --output artifacts/forecasting
 ```
@@ -161,6 +173,7 @@ and [LIVE_OPERATIONS.md](LIVE_OPERATIONS.md). The packaged forecast is historica
 | `POST /v1/predict` | Individual severity prediction; `/predict` is an alias |
 | `POST /v1/predict/batch` | 1–1,000 objects inside an `events` array |
 | `/v1/forecasts`, `/v1/alerts` | Dated forecasts and eligible research signals |
+| `/v1/outlook` | Separate 2026–2030 annual research counts and empirical error bands |
 | `/v1/data/map?days=90` | County counts; supported windows 7/30/90/365 |
 | `/v1/data/summary`, `/v1/data/daily?county=Nairobi&days=90` | Quality metadata and daily aggregates |
 | `/v1/reporting/status` | Source-access and reporting evidence |
@@ -220,7 +233,7 @@ instances per revision and immutable Build-ID image tags.
 
 Run `deploy/gcp/smoke-test.ps1 -ServiceUrl 'SERVICE_URL'` after deployment. Browser checks in
 `scripts/qa_react.cjs` use headless Chrome's DevTools port 9224; `KPVIEWS_QA_URL` selects a
-public service or authenticated proxy. On 21 November 2026, 44 backend tests and deployed
+public service or authenticated proxy. On 21 November 2026, 50 backend tests and deployed
 browser checks passed. These verify software behavior, not operational model validity.
 
 ## Limitations and monitoring

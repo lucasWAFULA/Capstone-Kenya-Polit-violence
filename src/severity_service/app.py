@@ -124,6 +124,13 @@ def create_app(registry: ModelRegistry | None = None) -> FastAPI:
     def latest_forecasts():
         return forecasts()
 
+    @app.get('/v1/outlook')
+    def long_term_outlook():
+        path = Path(__file__).resolve().parents[2] / 'artifacts/outlook/outlook.json'
+        if not path.is_file():
+            raise HTTPException(status_code=503, detail='Annual research outlook has not been built')
+        return json.loads(path.read_text(encoding='utf-8'))
+
     @app.get('/v1/alerts')
     def review_alerts():
         state = forecasts()

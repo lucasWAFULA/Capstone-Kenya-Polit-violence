@@ -117,6 +117,30 @@ recover original first-seen times, remove retrospective revision bias or prove r
 
 ## Serving architecture and analytical interface
 
+### Added annual outlook for 2026–2030
+
+A separate annual count experiment now extends the product beyond 2025; it does not extend
+the seven-day classifier's horizon. Complete 2000–2024 county-year counts are used because
+the descriptive source ends on 15 November 2025 and 2025 is partial. A 2025 bridge means the
+displayed 2026–2030 projections require leads 2–6. Multi-year rolling origins in 2009–2012
+select a damped log trend over a recent five-year mean; the untouched 2019–2024 test has
+pooled county MAE 0.9696 and national MAE 12.7750 events/year. The final annual fit uses
+complete history through 2024.
+
+The recent-mean baseline has lower held-out county MAE (0.8837) and RMSE (1.7357) than
+the validation-selected trend (0.9696 and 1.8795). No improvement over that baseline is claimed;
+the test is not reused to change selection. This is an exploratory outlook with material limits.
+
+The default Forecasts view provides county/national annual expected counts, exploratory
+80% validation-error bands and CSV export. Held-out band coverage is 86.17% across county-years;
+six national totals fall within the national bands. These small retrospective evaluations do
+not guarantee future coverage. Changing reporting and structural shifts remain major limits.
+See [LONG_TERM_OUTLOOK.md](LONG_TERM_OUTLOOK.md) and `artifacts/outlook/` for reproducible
+aggregate inputs, model settings, evaluation and projections. Historical seven-day results
+remain separately labelled and long-term projections do not create current alerts.
+
+### API and interface
+
 FastAPI validates individual and batch event requests, applies calendar transformations,
 loads the checksummed registry and returns the primary class, probabilities, model version
 and request ID. Extra fields, including fatalities, are rejected. The six historical context

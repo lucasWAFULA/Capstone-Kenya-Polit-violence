@@ -1,5 +1,10 @@
 # Seven-day county forecasting research
 
+For the new **2026–2030 annual outlook**, see [LONG_TERM_OUTLOOK.md](LONG_TERM_OUTLOOK.md).
+It has separate data aggregation, targets, multi-year evaluation and uncertainty bands.
+The seven-day results below do not validate that long-term model and have not been relabelled
+as future five-year probabilities. Both views are available in the React Forecasts section.
+
 This extension forecasts a different target from the existing event severity classifier:
 whether at least one political violence incident with three or more fatalities is recorded
 in a county during the seven days beginning at a Monday forecast origin.

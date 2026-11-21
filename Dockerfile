@@ -16,6 +16,7 @@ COPY src ./src
 COPY --from=frontend /build/src/severity_service/static/ui ./src/severity_service/static/ui
 COPY artifacts/production ./artifacts/production
 COPY artifacts/forecasting ./artifacts/forecasting
+COPY artifacts/outlook ./artifacts/outlook
 COPY artifacts/data_quality ./artifacts/data_quality
 COPY scripts/update_forecasts.py ./scripts/update_forecasts.py
 COPY scripts/ingestion_worker.py ./scripts/ingestion_worker.py
