@@ -1,3 +1,10 @@
+FROM node:24-alpine AS frontend
+WORKDIR /build
+COPY frontend/package*.json ./frontend/
+RUN cd frontend && npm ci --no-audit --no-fund
+COPY frontend ./frontend
+RUN cd frontend && npm run build
+
 FROM python:3.13-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PYTHONPATH=/app/src
@@ -6,6 +13,7 @@ WORKDIR /app
 COPY requirements-prod.txt .
 RUN pip install --no-cache-dir -r requirements-prod.txt
 COPY src ./src
+COPY --from=frontend /build/src/severity_service/static/ui ./src/severity_service/static/ui
 COPY artifacts/production ./artifacts/production
 COPY artifacts/forecasting ./artifacts/forecasting
 COPY artifacts/data_quality ./artifacts/data_quality

@@ -1,5 +1,43 @@
 # Kenya Political Violence Early-Warning Research System
 
+## K-PVIEWS React intelligence workspace
+
+The default interface is now K-PVIEWS, a responsive React + TypeScript application with
+executive overview, severity assessment (individual and JSON batch), forecasting, county
+mapping, alerts, data exploration, CSV exports and model governance. Light and dark themes
+are supported. All values come from existing same-origin API endpoints; historical replay
+and suppressed alerts remain explicitly labelled. Historical outcome fatalities are displayed
+as descriptive statistics but are never accepted in prediction requests.
+
+The Dockerfile builds the frontend with Node 24 before packaging it into FastAPI's image.
+Cloud Run authentication and its current audience apply to both the UI and API. Browser
+credentials or service-account tokens are not embedded in the JavaScript bundle.
+
+For local development, start FastAPI on port 8765, then run:
+
+```powershell
+cd frontend
+npm ci
+npm run dev
+```
+
+For a production preview, run `npm run build --prefix frontend` and open FastAPI at `/`.
+`/event-assessment` opens the React severity page. The legacy HTML remains a fallback when
+the frontend has not been built. Model metadata is available at `/v1/models/info`.
+
+The packaged `artifacts/data_quality/daily_activity.json` contains only bounded daily
+national and county aggregates with a source-run identifier matching `daily_summary.json`.
+After rebuilding a verified daily dataset, regenerate it with:
+
+```powershell
+python scripts/package_dashboard_activity.py --source-root 'PATH_TO_DATA_WORKSPACE'
+```
+
+Existing prediction inputs remain unchanged: six verified historical values are required;
+server-side history lookup is not yet implemented. The test-input button loads illustrative
+inputs, not an observed incident. Demo mode labels historical API data; it does not invent data
+or bypass service authentication. Reviewer notes and assignment are not persisted.
+
 Repository: https://github.com/lucasWAFULA/Capstone-Kenya-Polit-violence
 
 The national dashboard at `/` starts with an interactive 47-county map of actual recorded

@@ -26,6 +26,12 @@ def daily_state(root):
         summary['matches_latest_extraction']=source.exists() and read(source)['run_id']==summary['source_run_id']
         return summary,payload
     public=root/'artifacts/data_quality/daily_summary.json'
+    packaged=root/'artifacts/data_quality/daily_activity.json'
+    if public.exists() and packaged.exists():
+        metadata=read(public)
+        payload=read(packaged)
+        if payload.get('summary',{}).get('source_run_id') == metadata.get('source_run_id'):
+            return dict(metadata,available=True,series_available=True,matches_latest_extraction=None),payload
     if public.exists():
         return dict(read(public),available=True,series_available=False,matches_latest_extraction=None),None
     return {'available':False,'series_available':False,'notice':'Build the daily county dataset to view coverage and activity.'},None

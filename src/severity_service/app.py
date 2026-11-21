@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import csv
 import logging
 import os
 from contextlib import asynccontextmanager
@@ -80,14 +81,39 @@ def create_app(registry: ModelRegistry | None = None) -> FastAPI:
 
     app = FastAPI(title="Kenya Event Severity API", version="1.0.0", lifespan=lifespan)
     app.mount('/static', StaticFiles(directory=Path(__file__).with_name('static')), name='static')
+    ui_directory = Path(__file__).with_name('static') / 'ui'
+    if ui_directory.is_dir():
+        app.mount('/ui', StaticFiles(directory=ui_directory), name='react-ui')
 
     @app.get("/", include_in_schema=False)
     def dashboard():
+        if (ui_directory / 'index.html').is_file():
+            return FileResponse(ui_directory / 'index.html')
         return FileResponse(Path(__file__).with_name("overview.html"))
 
     @app.get('/event-assessment', include_in_schema=False)
     def event_assessment():
+        if (ui_directory / 'index.html').is_file():
+            return FileResponse(ui_directory / 'index.html')
         return FileResponse(Path(__file__).with_name("dashboard.html"))
+
+    @app.get('/v1/models/info')
+    def model_information(request: Request):
+        """Expose approved metadata and evaluation only; never model files or raw records."""
+        manifest = request.app.state.registry.manifest
+        directory = Path(os.getenv('MODEL_REGISTRY_DIR', str(Path(__file__).resolve().parents[2] / 'artifacts/production')))
+        metrics_path = directory / 'model_metrics.csv'
+        metrics = []
+        if metrics_path.is_file():
+            with metrics_path.open(encoding='utf-8', newline='') as handle:
+                metrics = list(csv.DictReader(handle))
+        return {'version': manifest['version'],
+                'primary': manifest['models']['primary']['name'],
+                'challenger': manifest['models']['challenger']['name'],
+                'training_data': {key: manifest.get('training_data', {}).get(key)
+                                  for key in ('rows', 'max_event_date')},
+                'split_policy': manifest.get('split_policy'), 'metrics': metrics,
+                'notice': 'Chronological experiment metrics; not an independent evaluation of the final all-data refit.'}
 
     def forecasts():
         store_path = Path(os.getenv('EVENT_STORE_PATH', str(Path(__file__).resolve().parents[2] / 'runtime/events.sqlite3')))

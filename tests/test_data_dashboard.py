@@ -44,3 +44,17 @@ def test_new_extraction_marks_old_panel_as_older(tmp_path):
     (root/'daily/latest.json').write_text(json.dumps({'directory':str(output)}))
     (root/'latest.json').write_text(json.dumps({'run_id':'new'}))
     assert daily_state(tmp_path)[0]['matches_latest_extraction'] is False
+
+
+def test_packaged_daily_series_requires_matching_provenance(tmp_path):
+    directory = tmp_path / 'artifacts/data_quality'
+    directory.mkdir(parents=True)
+    (directory / 'daily_summary.json').write_text(json.dumps({'source_run_id': 'verified'}))
+    path = directory / 'daily_activity.json'
+    payload = {'summary': {'source_run_id': 'other'}, 'national': [], 'counties': {}}
+    path.write_text(json.dumps(payload))
+    assert daily_state(tmp_path)[1] is None
+    payload['summary']['source_run_id'] = 'verified'
+    path.write_text(json.dumps(payload))
+    summary, series = daily_state(tmp_path)
+    assert summary['series_available'] and series['summary']['source_run_id'] == 'verified'

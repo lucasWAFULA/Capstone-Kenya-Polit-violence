@@ -1,4 +1,7 @@
 .venv/
+**/node_modules/
+**/*.tsbuildinfo
+src/severity_service/static/ui/
 .venv*/
 .python/
 .venv*/

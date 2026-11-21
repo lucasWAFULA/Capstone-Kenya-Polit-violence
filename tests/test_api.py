@@ -75,15 +75,33 @@ def test_dashboard_and_guide_aliases():
         page = client.get("/")
         assert page.status_code == 200
         assert "text/html" in page.headers["content-type"]
-        assert "Event Severity Monitor" in page.text
-        assert "National risk overview" in page.text
-        assert "Event Severity Monitor" in client.get('/event-assessment').text
+        if "K-PVIEWS" in page.text:
+            assert '/ui/assets/' in page.text
+            assert "K-PVIEWS" in client.get('/event-assessment').text
+            import re
+            assets = re.findall(r'(?:src|href)="(/ui/assets/[^\"]+)"', page.text)
+            assert assets
+            for asset in assets:
+                assert client.get(asset).status_code == 200
+        else:
+            assert "Event Severity Monitor" in page.text
+            assert "National risk overview" in page.text
+            assert "Event Severity Monitor" in client.get('/event-assessment').text
         assert len(client.get('/static/kenya-counties.geojson').json()['features']) == 47
         forecasts = client.get('/v1/forecasts').json()
         assert len(forecasts['counties']) == 47
         assert client.get('/v1/alerts').json()['alerts'] == []
         assert client.get("/health").json()["status"] == "ready"
         assert client.post("/predict", json=EVENT).json()["severity"] == "High"
+
+
+def test_governance_metadata_and_fatalities_rejection():
+    with TestClient(create_app(registry())) as client:
+        info = client.get('/v1/models/info')
+        assert info.status_code == 200
+        assert info.json()['primary'] == 'Logistic Regression'
+        assert 'file' not in info.json()['training_data']
+        assert client.post('/v1/predict', json={**EVENT, 'fatalities': 3}).status_code == 422
 
 
 def test_rejects_negative_history_and_empty_batch():

@@ -1,4 +1,7 @@
 .git
+**/node_modules
+frontend/dist
+**/*.tsbuildinfo
 .venv
 .venv313
 .python
@@ -10,6 +13,7 @@ __pycache__
 .pytest_cache
 *.ipynb
 *.csv
+!artifacts/production/model_metrics.csv
 tests
 runtime
 data
