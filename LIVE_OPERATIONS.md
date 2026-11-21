@@ -2,6 +2,18 @@
 
 ## Open the updated dashboard
 
+The published React demonstration is public at
+https://kenya-event-severity-clabrcsgmq-bq.a.run.app. Provider credentials are required only
+for ACLED ingestion, not for opening this website. Public hosting does not establish fresh
+source coverage. See README.md for the current interface, architecture and fresh-clone setup.
+
+Build React once before starting a production-style local preview:
+
+```powershell
+npm ci --prefix frontend
+npm run build --prefix frontend
+```
+
 Stop your old server with Ctrl+C, then run from the project directory:
 
 ```powershell
@@ -12,14 +24,13 @@ Open http://127.0.0.1:8000. If Windows blocks that port, use
 `.\scripts\run_local.ps1 -Port 8765` and open the matching address.
 The helper selects the existing `.venv313` or `.venv` and loads `.env` if present.
 
-The main page contains the national map, searchable county assessments, historical
-probability trends, model performance, and the research review queue. `/event-assessment`
-retains the original event classifier. `/docs` describes both forecast and severity APIs.
-The map now defaults to actual recorded events, with a 30-day activity window. Switch
-layers or windows, hover over counties, click to select, drag to pan, and use +/− or scroll
-to zoom. Select **Seven-day forecast replay** to inspect the separately dated model output.
-The **Daily data foundation** panel additionally displays the verified API calendar, all
-zero-record county-days, completeness checks, and daily national/county activity. Build it
+The React sidebar separates Overview, Severity prediction, Forecasts & trends, Geographic
+intelligence, Alerts & review, Data explorer and Model governance. `/event-assessment`
+opens the event classifier. `/docs` describes forecast and severity APIs. The Overview starts
+with 90 observed days. County/window selections link supported charts and tables; the
+Geographic intelligence page provides alternate count layers. Forecasts & trends displays
+the separately dated research estimates. Data explorer shows coverage and quality metadata,
+county search, daily activity and exportable aggregate tables. Build the daily panel
 after extraction with `python scripts/build_county_daily.py`; see `DAILY_DATASET.md`.
 Its dataset coverage is separate from the older forecast replay's input coverage.
 
@@ -62,8 +73,9 @@ set a known query cutoff with `--coverage-end YYYY-MM-DD`; stale coverage cannot
 silently extended with zero-event days to make a current forecast.
 
 A successful run saves a versioned snapshot and generates a seven-day forecast beginning
-tomorrow at midnight in Nairobi. Refresh the dashboard; it will show **Current research
-forecast**. The page also refreshes every 60 seconds. No model retraining occurs.
+tomorrow at midnight in Nairobi. Use **Refresh data** in React to request the new state.
+No model retraining occurs. Cloud ingestion needs persistent shared storage and scheduling;
+running a local updater does not change an already-deployed image's packaged data.
 
 ## Run weekly updates
 

@@ -33,8 +33,9 @@ The check requests access metadata and a one-record query for the last 14 days. 
 prints OAuth credentials/tokens. A blocked/unconfirmed check exits nonzero and records
 its status locally in ignored `runtime/reporting_status.json`.
 
-The dashboard's reporting strip displays connectivity, the last access check, accessible
-recent-record count, last successful sync, and the actual reason recent reporting is blocked.
+The React Data explorer displays reporting-access status and available provenance; the
+context banner distinguishes historical activity from recent ingestion. Detailed connectivity,
+last-check, recent-record and sync evidence remains available in the reporting endpoint.
 `GET /v1/reporting/status` serves this non-sensitive evidence. Browser refreshes read the
 saved result; they do not repeatedly authenticate against ACLED.
 

@@ -1,121 +1,176 @@
-# Kenya Political Violence Early-Warning Research System
+# K-PVIEWS
 
-## K-PVIEWS React intelligence workspace
+**Kenya Political Violence & Event Severity Intelligence Platform** is an academic research
+application for exploring recorded violence, assessing event severity and examining separate
+county-level seven-day forecasts. React + TypeScript provides the interface; FastAPI serves
+predictions and bounded aggregate data.
 
-The default interface is now K-PVIEWS, a responsive React + TypeScript application with
-executive overview, severity assessment (individual and JSON batch), forecasting, county
-mapping, alerts, data exploration, CSV exports and model governance. Light and dark themes
-are supported. All values come from existing same-origin API endpoints; historical replay
-and suppressed alerts remain explicitly labelled. Historical outcome fatalities are displayed
-as descriptive statistics but are never accepted in prediction requests.
+- **Canonical repository:** [lucasWAFULA/Capstone-Kenya-Polit-violence](https://github.com/lucasWAFULA/Capstone-Kenya-Polit-violence)
+- **Public demonstration:** https://kenya-event-severity-clabrcsgmq-bq.a.run.app
+- **Final report:** [FINAL_REPORT.md](FINAL_REPORT.md)
+- **AI disclosure:** [AI_USE.md](AI_USE.md)
 
-The Dockerfile builds the frontend with Node 24 before packaging it into FastAPI's image.
-Cloud Run authentication and its current audience apply to both the UI and API. Browser
-credentials or service-account tokens are not embedded in the JavaScript bundle.
+Website and API access are public as of 21 November 2026. ACLED ingestion still requires
+separate data-provider credentials. Historical results are labelled; public hosting does not
+make the source data current.
 
-For local development, start FastAPI on port 8765, then run:
+## Submission checklist
 
-```powershell
-cd frontend
-npm ci
-npm run dev
+| Required component | Repository evidence |
+| --- | --- |
+| Overview, setup, architecture and reproduction | This README |
+| AI assistance disclosure | [AI_USE.md](AI_USE.md); student must verify the course policy |
+| Scripted data pipeline | [fetch_acled_data.py](scripts/fetch_acled_data.py), [build_county_daily.py](scripts/build_county_daily.py), [source modules](src/severity_service) |
+| Training and serialized models | [train_production_models.py](scripts/train_production_models.py), [train_forecasting.py](scripts/train_forecasting.py), [production registry](artifacts/production), [forecast artifacts](artifacts/forecasting) |
+| Docker and Compose | [Dockerfile](Dockerfile), [compose.yaml](compose.yaml), [Dockerfile.reporting](Dockerfile.reporting) |
+| API service | [app.py](src/severity_service/app.py), [schemas.py](src/severity_service/schemas.py), [tests](tests) |
+| Final report | [FINAL_REPORT.md](FINAL_REPORT.md), with [FORECASTING_RESULTS.md](FORECASTING_RESULTS.md) |
+
+`compose.yaml` is the equivalent of `docker-compose.yml`. The final report is GitHub-readable
+Markdown; no PDF, Word report or slide deck is claimed.
+
+## Product and models
+
+Seven React sections cover executive overview, individual/JSON batch severity assessment,
+forecasts and trends, geographic intelligence, alerts and review, data exploration, and model
+governance. Features include a local 47-county map, verified historical charts, county/window
+filters, CSV/JSON exports, responsive navigation and light/dark themes.
+
+Keep these evidence types separate:
+
+1. **Observed activity:** recorded counts and outcomes with dated coverage and reporting restrictions.
+2. **Event severity:** Logistic Regression returns Low (0 fatalities), Moderate (1–2) or High
+   (3+) and class probabilities. XGBoost scores in shadow mode only.
+3. **County forecasts:** a separate Random Forest research model estimates at least one
+   high-severity political violence event in the next seven days.
+
+Fatalities define outcomes and appear in descriptive statistics; current-event fatalities are
+never accepted as predictors. The severity API requires six caller-supplied historical values
+from eligible records strictly before the event date. Automatic dated-snapshot lookup is not
+implemented. Unknown history must not be replaced with zero.
+
+## Architecture
+
+```mermaid
+flowchart LR
+    Git[GitHub source] --> CI[GitHub Actions: tests and React/Docker build]
+    Git --> Build[Manual Cloud Build submission]
+    Build --> Registry[Artifact Registry image]
+    Registry --> Run[Cloud Run: React and FastAPI]
+    Client[Browser or API client] --> Run
+    Models[Versioned models and checksums] --> Image[Artifacts embedded in image]
+    Aggregates[Dated county and daily aggregates] --> Image
+    Image --> Run
+    ACLED[ACLED API: credentials required] --> Pipeline[Versioned extraction and processing]
+    Pipeline --> Data[Private raw snapshots and master]
+    Data --> Train[Chronological training and evaluation]
+    Train --> Models
+    Data --> Aggregates
+    Run --> Logging[Structured shadow logs]
 ```
 
-For a production preview, run `npm run build --prefix frontend` and open FastAPI at `/`.
-`/event-assessment` opens the React severity page. The legacy HTML remains a fallback when
-the frontend has not been built. Model metadata is available at `/v1/models/info`.
+Models and approved aggregates are packaged in the image. Cloud Storage model/feature
+loading remains future work. Private raw data and SQLite state are excluded from deployment;
+Cloud Run's local filesystem is ephemeral, not durable shared ingestion storage. The GitHub
+workflow tests and builds; the deploy script explicitly submits Cloud Build. A repository
+deployment trigger is not claimed.
 
-The packaged `artifacts/data_quality/daily_activity.json` contains only bounded daily
-national and county aggregates with a source-run identifier matching `daily_summary.json`.
-After rebuilding a verified daily dataset, regenerate it with:
+## Run from a fresh clone
 
-```powershell
-python scripts/package_dashboard_activity.py --source-root 'PATH_TO_DATA_WORKSPACE'
-```
-
-Existing prediction inputs remain unchanged: six verified historical values are required;
-server-side history lookup is not yet implemented. The test-input button loads illustrative
-inputs, not an observed incident. Demo mode labels historical API data; it does not invent data
-or bypass service authentication. Reviewer notes and assignment are not persisted.
-
-Repository: https://github.com/lucasWAFULA/Capstone-Kenya-Polit-violence
-
-The national dashboard at `/` starts with an interactive 47-county map of actual recorded
-activity. Choose events, fatalities, or high-severity political violence and 7/30/90/365-day
-windows. Hover, click, drag to pan, and zoom with the controls or mouse wheel. County
-selection updates the detail panel, table, and local daily chart. The seven-day research
-forecast replay is a separate map layer; current alerts remain suppressed for historical inputs.
-Authenticated ACLED ingestion can update research forecasts without retraining the model.
-
-The separate `/event-assessment` page classifies a described event as Low, Moderate, or High.
-The two pages use different models and targets. ACLED records reflect reported incidents;
-results support human assessment and forecasting is not operationally validated.
-See [LIVE_OPERATIONS.md](LIVE_OPERATIONS.md) for credentials, weekly ingestion, and local startup.
-See [REPORTING_READINESS.md](REPORTING_READINESS.md) for the separate recent-reporting
-access check and automatic activity updater. A successful API login alone is not live reporting.
-For the historical dataset milestone, use [HISTORICAL_INGESTION.md](HISTORICAL_INGESTION.md):
-`python scripts/fetch_acled_data.py` preserves raw API snapshots and produces CSV/Parquet
-master datasets and a quality report, without training or generating forecasts.
-Then run `python scripts/build_county_daily.py` to create the complete 47-county daily
-calendar, historical features, and censored seven-day labels. See [DAILY_DATASET.md](DAILY_DATASET.md).
-The dashboard displays daily coverage, zero-record counts, quality checks, and activity charts.
-
-The deployment package excludes raw ACLED data and notebook outputs. The original notebook
-bundle is preserved in `artifacts/severity_model_bundle.joblib` for research reference.
-The service uses the separately refitted registry in `artifacts/production`.
-Reported holdout metrics describe the chronological experiment, not an independent evaluation
-of the final all-data refit. Historical features on the event-assessment page are entered manually.
-
-This project serves the notebook's governed model decision:
-
-- **Primary:** Logistic Regression; its result is returned to callers.
-- **Challenger:** XGBoost; it scores every request in shadow mode and is never used to alter the response.
-- **Target:** `Low` (0 fatalities), `Moderate` (1–2), or `High` (3+).
-
-The training command repeats the chronological evaluation (`<2022` train, 2022–2023 validation,
-2024+ test), records both candidates' metrics, then refits both models on all data available through
-2025 for deployment. Artifacts have a versioned manifest and SHA-256 checksums.
-
-## Build the model registry
-
-From this directory, with a Python 3.13 environment:
+Prerequisites: Git, Python 3.13 and Node.js 24/npm. Docker is optional for native startup.
 
 ```powershell
-python -m pip install -r requirements.txt
-$env:PYTHONPATH = "$PWD/src"
-python scripts/train_production_models.py --version 1.0.0
-```
-
-This writes `artifacts/production/manifest.json`, both model files, and `model_metrics.csv`.
-The service refuses to start when the feature contract, class order, or artifact checksum differs.
-
-## Run locally
-
-Use Python 3.13 (the model's pinned XGBoost version requires Python 3.12 or newer).
-Create and activate an environment before installing the requirements:
-
-```powershell
+git clone https://github.com/lucasWAFULA/Capstone-Kenya-Polit-violence.git
+cd Capstone-Kenya-Polit-violence
 py -3.13 -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
+npm ci --prefix frontend
+npm run build --prefix frontend
+$env:PYTHONPATH = "$PWD/src"
+python -m uvicorn severity_service.app:app --host 127.0.0.1 --port 8000
 ```
+
+Open http://localhost:8000. Committed artifacts allow serving without raw training data or
+ACLED credentials. `/event-assessment` opens severity assessment; `/docs` exposes OpenAPI.
+In another activated terminal, run `python -m pytest -q`. Startup checks model checksums,
+feature names and class order. For React development, start FastAPI on **8765**, then run
+`npm run dev --prefix frontend` and open Vite's printed address at `/ui/`.
+
+Generated frontend assets under `src/severity_service/static/ui/` are ignored by Git and
+rebuilt by Docker from committed source and `frontend/package-lock.json`.
+
+## Reproduce the pipeline and experiments
+
+Raw ACLED exports, credentials, processed masters and local SQLite stores are excluded from
+Git. Obtain authorized ACLED access and respect its usage conditions. Fresh API responses can
+differ because of revisions, dates and account restrictions. Exact experiment replication
+requires the same frozen input export and pinned dependencies; querying the API again alone
+does not guarantee identical results.
+
+### Historical extraction and daily panel
+
+Copy `.env.example` to ignored `.env` and enter your ACLED credentials in your editor. Then:
 
 ```powershell
-$env:PYTHONPATH = "$PWD/src"
-uvicorn severity_service.app:app --host 127.0.0.1 --port 8000
+python scripts/check_acled_api.py
+python scripts/fetch_acled_data.py
+python scripts/inspect_acled_data.py
+python scripts/build_county_daily.py
+python scripts/package_activity_map.py
+python scripts/package_dashboard_activity.py --source-root .
 ```
 
-OpenAPI documentation is at `http://localhost:8000/docs`. Health probes are
-`/health/live` and `/health/ready`.
-Open `http://localhost:8000/` for the national overview, or `/event-assessment` for the event form. `/health` and `/predict` are
-aliases for `/health/ready` and `/v1/predict`. Responses use `severity` and `probabilities`.
+Extraction preserves raw pages, hashes and quality reports before atomically updating the
+latest pointer. The daily build produces the complete 47-county calendar, historical lags
+and censored seven-day labels. Packaging requires the daily series and packaged summary to
+have matching source-run IDs. Only bounded aggregate chart fields are packaged. See
+[HISTORICAL_INGESTION.md](HISTORICAL_INGESTION.md) and [DAILY_DATASET.md](DAILY_DATASET.md).
 
-Example request:
+### Event severity training
+
+```powershell
+python scripts/train_production_models.py --data 'PATH_TO_FROZEN_EXPORT.csv' --output artifacts/production --version 1.0.1
+```
+
+The script trains before 2022, evaluates on 2022–2023 and 2024 onward, then refits both
+governed candidates on all input records for serving. Outputs include serialized pipelines,
+`model_metrics.csv` and the checksum manifest. Holdout metrics describe the chronological
+experiment, not independent evaluation of the final all-data refit.
+
+### Separate forecasting experiment
+
+```powershell
+python scripts/train_forecasting.py --data 'PATH_TO_FROZEN_EXPORT.csv' --coverage-end 2025-09-07 --reporting-delay-days 7 --output artifacts/forecasting
+```
+
+Use the export's actual final fully observed date. Repeat delays 0 and 14 in separate output
+directories for sensitivity analysis. Rolling 2019–2021 validation selects the model; fitting,
+calibration, threshold selection and testing use separate chronological periods with horizon
+and reporting-delay purging. See [FORECASTING_RESULTS.md](FORECASTING_RESULTS.md).
+
+`update_reporting.py` updates descriptive reporting; `update_forecasts.py` updates forecasts
+without retraining. Freshness/access gates apply. See [REPORTING_READINESS.md](REPORTING_READINESS.md)
+and [LIVE_OPERATIONS.md](LIVE_OPERATIONS.md). The packaged forecast is historical, not a current alert stream.
+
+## API service
+
+| Endpoint | Purpose |
+| --- | --- |
+| `/health/live`, `/health/ready` | Process and model readiness |
+| `POST /v1/predict` | Individual severity prediction; `/predict` is an alias |
+| `POST /v1/predict/batch` | 1–1,000 objects inside an `events` array |
+| `/v1/forecasts`, `/v1/alerts` | Dated forecasts and eligible research signals |
+| `/v1/data/map?days=90` | County counts; supported windows 7/30/90/365 |
+| `/v1/data/summary`, `/v1/data/daily?county=Nairobi&days=90` | Quality metadata and daily aggregates |
+| `/v1/reporting/status` | Source-access and reporting evidence |
+| `/v1/models/info` | Model metadata and evaluation metrics |
+
+Illustrative input, not a verified incident:
 
 ```json
-POST /v1/predict
 {
-  "event_date": "2026-09-20",
+  "event_date": "2025-09-01",
   "disorder_type": "Political violence",
   "event_type": "Battles",
   "sub_event_type": "Armed clash",
@@ -133,126 +188,48 @@ POST /v1/predict
 }
 ```
 
-History values are required because they must come from events strictly before `event_date`. The
-calling feature pipeline should compute them from the production event store. Defaulting an unknown
-history to zero would create training/serving skew, so the API deliberately rejects omitted values.
+Responses contain `request_id`, `severity`, `probabilities`, `model_name` and `model_version`.
+Unknown fields, including `fatalities`, and missing historical values are rejected.
 `previous_high_severity_events_in_county` uses the previous 90 days.
-Actor codes are integers; missing civilian targeting is JSON `null`.
 
-## Container
-
-Build only after generating the artifacts:
+## Containers and cloud deployment
 
 ```powershell
-docker build -t kenya-severity-api:1.0.0 .
-docker run --rm -p 8080:8080 kenya-severity-api:1.0.0
+docker compose up --build -d
+# Open http://localhost:8000
+docker compose down
 ```
 
-## Deploy to Google Cloud Run
+Optional `live` and `reporting` profiles require `.env` and use named local volumes.
+The Dockerfile builds React with Node 24 and runs FastAPI as a non-root user.
 
-The checked-in GCP configuration uses Cloud Run, Cloud Build, and Artifact Registry in
-`africa-south1` (Johannesburg). The service is private by default and runs under a dedicated
-runtime service account with no project roles.
-
-Prerequisites:
-
-1. Select or create a billing-enabled GCP project.
-2. Install the Google Cloud CLI and run `gcloud auth login`.
-3. Make sure your account can enable APIs, create service accounts and repositories, and change IAM.
-
-Bootstrap the project once:
+The deployed project is `k-pviews-2026`, region `africa-south1`, service `kenya-event-severity`.
+For a new authorized billing-enabled project, bootstrap once, then deploy:
 
 ```powershell
-.\deploy\gcp\bootstrap.ps1 -ProjectId 'your-gcp-project-id'
+gcloud auth login
+.\deploy\gcp\bootstrap.ps1 -ProjectId 'YOUR_PROJECT_ID'
+.\deploy\gcp\deploy.ps1 -ProjectId 'YOUR_PROJECT_ID'
 ```
 
-Build, publish, and deploy:
+**Public access is the configured default**, matching the published demonstration. Use
+`-Private` to disable public invocation. The older `-AllowUnauthenticated` switch remains
+supported. Direct Cloud Build submissions can override `_ACCESS_FLAG` with
+`--no-allow-unauthenticated`. The configuration uses 1 CPU/1 GiB, concurrency 20, up to five
+instances per revision and immutable Build-ID image tags.
 
-```powershell
-.\deploy\gcp\deploy.ps1 -ProjectId 'your-gcp-project-id'
-```
+Run `deploy/gcp/smoke-test.ps1 -ServiceUrl 'SERVICE_URL'` after deployment. Browser checks in
+`scripts/qa_react.cjs` use headless Chrome's DevTools port 9224; `KPVIEWS_QA_URL` selects a
+public service or authenticated proxy. On 21 November 2026, 44 backend tests and deployed
+browser checks passed. These verify software behavior, not operational model validity.
 
-The deployment uses an immutable Cloud Build ID image tag, checks model artifacts during startup,
-allocates 1 CPU/1 GiB, permits up to 20 concurrent requests per instance, and scales from zero to
-five instances. Startup and liveness probes call the model-aware health endpoints.
+## Limitations and monitoring
 
-For a private service, grant `roles/run.invoker` only to the user, group, or service account that
-will call the API. You can test through a local authenticated proxy:
-
-```powershell
-gcloud run services proxy kenya-event-severity --project='your-gcp-project-id' --region='africa-south1'
-```
-
-Public access is available only as an explicit option:
-
-```powershell
-.\deploy\gcp\deploy.ps1 -ProjectId 'your-gcp-project-id' -AllowUnauthenticated
-```
-
-Do not use that option for sensitive production traffic until application-level authentication,
-rate limiting, and abuse controls are in place. After deployment, use
-`deploy/gcp/smoke-test.ps1` against the service URL (or the local proxy URL).
-
-Cloud Run writes the API's structured shadow-comparison records to Cloud Logging. Create log-based
-metrics or export these records to BigQuery before using them for challenger promotion decisions.
-
-## Monitoring and promotion
-
-Every request emits a JSON `shadow_prediction` log containing model agreement and both models'
-High-severity probability. Join labels later by `request_id` and report, by calendar month:
-
-- primary/challenger macro F1 and High recall;
-- prediction mix and model agreement rate;
-- probability calibration by class;
-- missing/unknown category rates and feature-distribution drift;
-- p50/p95 latency and 4xx/5xx rates.
-
-Do not promote the challenger from AUC alone. Require a pre-declared evaluation window, no material
-drop in High recall, a statistically credible macro-F1 improvement, calibration review, and a new
-approved artifact version. Rollback consists of redeploying the prior immutable artifact directory.
-
-## Test
-
-```powershell
-$env:PYTHONPATH = "$PWD/src"
-pytest -q
-```
-
-GitHub Actions tests the API against direct inference from the real registry and builds the
-Docker image. Automatic cloud deployment is deferred until a manual Cloud Run deployment
-is verified, following the guide.
-
-Setup reference: [Google's FastAPI quickstart](https://docs.cloud.google.com/run/docs/quickstarts/build-and-deploy/deploy-python-fastapi-service).
-
-## County-level seven-day forecasting research
-
-`Capstone2.ipynb` now includes section 16 for a separate early-warning experiment.
-It preserves the event severity classifier. Its separate bundle supplies the national dashboard.
-The target is at least one high-severity political violence event in each county's
-next seven days. All 47 counties have weekly Monday observations, including zero-record
-weeks. Features use complete calendar-day windows strictly before the assumed reporting cutoff.
-Repeated actor rows are collapsed to one event ID when forecasting fields agree; conflicting
-event IDs are rejected. This prevents actor-level duplication from inflating incident counts.
-
-Run independently of the notebook:
-
-```powershell
-python scripts/train_forecasting.py --coverage-end 2025-09-07
-```
-
-Use the actual final fully observed date of your export. The default seven-day reporting
-delay is an assumption. `timestamp` is not treated as first-seen history. Without historic
-record versions and availability dates this is a retrospective experiment, not a proven
-real-time backtest. Repeat with `--reporting-delay-days 0` and `14` into separate `--output`
-folders to assess sensitivity. No-record rows do not prove that no violence occurred.
-
-Model selection compares a prevalence baseline, Logistic Regression, Random Forest, and
-XGBoost on rolling 2019–2021 validation. The selected model fits before 2022, calibrates
-on 2022, tunes its threshold on 2023, and is tested on 2024 onward. Label windows plus
-the reporting delay are purged at boundaries. The all-data refit is deliberately deferred.
-Exports under `artifacts/forecasting` contain the separate model bundle, summary, rolling
-metrics, county/year test metrics, reliability bins, and local-only panel/predictions.
-
-Current-data ingestion, the county map, and in-app research alerts are implemented. API access
-requires an authenticated account; ingestion retains first-seen timestamps and record versions.
-Historical 2025 records are explicitly labelled and cannot generate current alerts.
+- Forecasts are retrospective research with a high false discovery rate; stale/historical
+  forecasts suppress current signals. No operational forecasting validation is claimed.
+- Missing reports are not proof of no violence. Delays, account access and revisions affect coverage.
+- Severity history remains caller-supplied. Cloud Storage lookup, durable cloud ingestion,
+  persistent reviewer notes, application roles and rate limiting are future work.
+- Predictions support human assessment. Shadow logs are emitted; monthly label joins,
+  calibration/drift dashboards and challenger promotion automation are not claimed.
+- Review [FINAL_REPORT.md](FINAL_REPORT.md) and [AI_USE.md](AI_USE.md) against the course rubric before submission.

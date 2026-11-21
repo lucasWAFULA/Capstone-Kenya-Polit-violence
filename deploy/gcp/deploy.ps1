@@ -8,10 +8,13 @@ param(
     [string]$Service = 'kenya-event-severity',
     [string]$BuildServiceAccount = 'severity-build',
     [string]$RuntimeServiceAccount = 'severity-runtime',
-    [switch]$AllowUnauthenticated
+    [switch]$AllowUnauthenticated,
+    [switch]$Private
 )
 
 $ErrorActionPreference = 'Stop'
+if ($Private -and $AllowUnauthenticated) { throw 'Choose either -Private or -AllowUnauthenticated, not both.' }
+$accessFlag = if ($Private) { '--no-allow-unauthenticated' } else { '--allow-unauthenticated' }
 $projectRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
 $manifest = Join-Path $projectRoot 'artifacts\production\manifest.json'
 if (-not (Test-Path -LiteralPath $manifest -PathType Leaf)) {
@@ -30,21 +33,18 @@ try {
         --region=$Region `
         --service-account="projects/$ProjectId/serviceAccounts/$buildEmail" `
         --config=cloudbuild.yaml `
-        --substitutions="_REGION=$Region,_REPOSITORY=$Repository,_SERVICE=$Service,_RUNTIME_SERVICE_ACCOUNT=$runtimeEmail"
+        --substitutions="_REGION=$Region,_REPOSITORY=$Repository,_SERVICE=$Service,_RUNTIME_SERVICE_ACCOUNT=$runtimeEmail,_ACCESS_FLAG=$accessFlag"
     if ($LASTEXITCODE -ne 0) { throw "Cloud Build failed with exit code $LASTEXITCODE." }
 }
 finally {
     Pop-Location
 }
 
-if ($AllowUnauthenticated) {
-    gcloud run services add-iam-policy-binding $Service --project=$ProjectId --region=$Region --member='allUsers' --role='roles/run.invoker' --quiet | Out-Null
-    if ($LASTEXITCODE -ne 0) { throw 'Deployment succeeded, but public invoker access could not be granted.' }
-    Write-Warning 'The Cloud Run API is publicly invokable. Application-level authentication is not implemented.'
-}
-
 $serviceUrl = gcloud run services describe $Service --project=$ProjectId --region=$Region --format='value(status.url)'
 Write-Host "Deployment complete: $serviceUrl"
-if (-not $AllowUnauthenticated) {
+if ($Private) {
     Write-Host "Private smoke test: gcloud run services proxy $Service --project=$ProjectId --region=$Region"
+}
+else {
+    Write-Host 'The website and API are public. Application-level authentication is not implemented.'
 }

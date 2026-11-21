@@ -72,22 +72,23 @@ Checks verify unique county/date keys, 47 counties on every date, incident/fatal
 conservation, and all-zero counts on zero-record days. Boundary tests verify historical
 lags, future perturbation isolation, and the right-censored labels.
 
-The dashboard's **Daily data foundation** panel shows build dimensions, coverage, zero-day
-share, source counts, label completeness, national/county daily charts, and recent rows.
-The area selector includes National plus all 47 counties; windows cover 30, 90, or 365 days.
+The React **Data explorer** shows build dimensions, coverage, zero-record counts,
+source counts, label completeness, national/county daily charts and recent rows.
+The county selector includes all counties (National) plus all 47 counties; windows cover 7, 30, 90 or 365 days.
 `GET /v1/data/summary` serves build metadata; `GET /v1/data/daily?county=Bomet&days=30`
 serves bounded aggregate daily counts. Event notes and local paths are never exposed.
 
-The CSV, Parquet, and daily series stay local and are excluded from GitHub/container builds.
-Aggregate build metadata and four windows of derived county totals are packaged. This
-lets the interactive map show actual recorded counts even without private data mounted.
-A deployment without the local daily series still identifies those chart files as unavailable.
+The full CSV, Parquet and incident records stay local and are excluded from GitHub/container builds.
+Aggregate build metadata, four windows of county totals and a bounded 365-day national/county
+series are packaged. Run `python scripts/package_activity_map.py` and
+`python scripts/package_dashboard_activity.py --source-root .` after a verified panel build.
+The series must match the summary's source-run ID. This supplies real historical charts
+without exposing raw events; missing or mismatched series are shown as unavailable.
 
-The default map layer is recorded events, with fatalities and high-severity political
-violence as alternative layers. Activity windows are 7/30/90/365 days ending on the
-snapshot's final date. Hover shows county totals; click selects county detail and updates
-the daily chart. Drag pans the map; +/−, scroll, and Fit Kenya control zoom. Arrow keys pan
-when the map has focus. Colour ranges scale to the displayed count distribution and are
+The React Geographic intelligence map defaults to recorded events, with fatalities and
+high-severity political violence as alternatives. Activity windows are 7/30/90/365 days ending
+on the snapshot's final date. Hover shows county totals; click selects a county and updates
+the daily chart. Drag pans the map and +/− controls zoom. Colour ranges scale to the displayed count distribution and are
 not risk thresholds. A separate forecast layer retains the dated model replay.
 `GET /v1/data/map?days=30` returns the county aggregates. Rebuilding the daily panel
 automatically refreshes `artifacts/data_quality/county_activity.json`; the standalone

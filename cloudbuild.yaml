@@ -2,6 +2,7 @@ substitutions:
   _REGION: africa-south1
   _REPOSITORY: severity-models
   _SERVICE: kenya-event-severity
+  _ACCESS_FLAG: --allow-unauthenticated
   _RUNTIME_SERVICE_ACCOUNT: severity-runtime@${PROJECT_ID}.iam.gserviceaccount.com
 
 steps:
@@ -19,7 +20,7 @@ steps:
       - push
       - ${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/${_SERVICE}:${BUILD_ID}
 
-  - id: deploy-private-service
+  - id: deploy-service
     name: gcr.io/google.com/cloudsdktool/cloud-sdk:slim
     entrypoint: gcloud
     args:
@@ -38,7 +39,7 @@ steps:
       - --max-instances=5
       - --timeout=30s
       - --cpu-throttling
-      - --no-allow-unauthenticated
+      - ${_ACCESS_FLAG}
       - --startup-probe=httpGet.path=/health/ready,httpGet.port=8080,initialDelaySeconds=0,timeoutSeconds=5,periodSeconds=5,failureThreshold=24
       - --liveness-probe=httpGet.path=/health/live,httpGet.port=8080,initialDelaySeconds=10,timeoutSeconds=5,periodSeconds=30,failureThreshold=3
       - --labels=application=kenya-event-severity,model-version=1-0-0,managed-by=cloud-build
